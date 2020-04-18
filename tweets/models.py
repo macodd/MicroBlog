@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 from django.conf import settings
 
 
@@ -13,3 +14,6 @@ class Tweet(models.Model):
 
     def __str__(self):
         return str(self.content)
+
+    def get_absolute_url(self):
+        return reverse_lazy('tweet:detail', kwargs={'pk': self.pk})

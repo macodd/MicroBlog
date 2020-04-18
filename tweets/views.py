@@ -1,38 +1,52 @@
-# from django.shortcuts import render
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import (
+    DetailView,
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+from django.db.models import Q
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Tweet
 from .forms import TweetModelForm
-from .mixins import FormUserNeededMixin
+from .mixins import FormUserNeededMixin, UserOwnerMixin
 
 
 class TweetCreateView(FormUserNeededMixin, CreateView):
-    template_name = 'tweets/create_view.html'
-    form_class = TweetModelForm
-    success_url = '/tweets/create/'
+    template_name   = 'tweets/create_view.html'
+    model           = Tweet
+    form_class      = TweetModelForm
+
+
+class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
+    template_name   = 'tweets/update_view.html'
+    model           = Tweet
+    form_class      = TweetModelForm
+
+
+class TweetDeleteView(DeleteView):
+    template_name   = 'tweets/delete_view.html'
+    model           = Tweet
+    success_url     = reverse_lazy('tweet:list')
 
 
 class TweetDetailView(DetailView):
-    template_name = 'tweets/detail_view.html'
-    model = Tweet
+    template_name   = 'tweets/detail_view.html'
+    model           = Tweet
 
 
 class TweetListView(ListView):
-    template_name = 'tweets/list_view.html'
-    model = Tweet
+    template_name   = 'tweets/list_view.html'
+    model           = Tweet
 
-
-# def tweet_detail_view(request, id=1):
-#     obj = Tweet.objects.get(id=id)
-#     context = {
-#         'tweet': obj
-#     }
-#     return render(request, 'tweets/detail_view.html', context)
-#
-#
-# def tweet_list_view(request):
-#     query = Tweet.objects.all()
-#     context = {
-#         'tweet_list': query
-#     }
-#     return render(request, 'tweets/list_view.html', context)
+    def get_queryset(self):
+        qs = Tweet.objects.all()
+        query = self.request.GET.get('q', None)
+        if query is not None:
+            qs = qs.filter(
+                Q(content__icontains=query) |
+                Q(user__username__icontains=query)
+            )
+        return qs

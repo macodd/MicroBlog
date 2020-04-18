@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'tweets/search_form.html' %}<br/>
+
 {% for t in object_list %}
 
-    {{ t.content }}<br/>
+    <p>{{ t.content }}<br/>
     {{ t.user }}<br/>
-    {{ t.timestamp|timesince }}<br/>
+    {{ t.timestamp|timesince }}</p><br/><br/>
+
 {% empty %}
-    <li>No tweets yet.</li>
+
+    {% if request.GET.q %}
+        <p>No Tweets found.</p>
+    {% else %}
+        <p>No tweets yet.</p>
+    {% endif %}
 
 {% endfor %}
 
-</body>
-</html>
+{% endblock %}
