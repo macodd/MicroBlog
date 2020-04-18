@@ -1,7 +1,15 @@
 # from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 from .models import Tweet
+from .forms import TweetModelForm
+from .mixins import FormUserNeededMixin
+
+
+class TweetCreateView(FormUserNeededMixin, CreateView):
+    template_name = 'tweets/create_view.html'
+    form_class = TweetModelForm
+    success_url = '/tweets/create/'
 
 
 class TweetDetailView(DetailView):
@@ -12,7 +20,6 @@ class TweetDetailView(DetailView):
 class TweetListView(ListView):
     template_name = 'tweets/list_view.html'
     model = Tweet
-    paginate_by = 10
 
 
 # def tweet_detail_view(request, id=1):
