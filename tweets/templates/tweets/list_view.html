@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for t in object_list %}
+
+    {{ t.content }}<br/>
+    {{ t.user }}<br/>
+    {{ t.timestamp|timesince }}<br/>
+{% empty %}
+    <li>No tweets yet.</li>
+
+{% endfor %}
+
+</body>
+</html>
