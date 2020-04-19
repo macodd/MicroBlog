@@ -39,7 +39,6 @@ class TweetDetailView(DetailView):
 
 class TweetListView(ListView):
     template_name   = 'tweets/list_view.html'
-    model           = Tweet
 
     def get_queryset(self):
         qs = Tweet.objects.all()

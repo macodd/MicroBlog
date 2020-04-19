@@ -3,35 +3,64 @@
 {% block script %}
 
     <script>
+
     $(document).ready(function () {
-        $.ajax({
-            url: '/api/tweet/',
-            method: 'GET',
-            success: function(data){
-                $.each(data, function (k, v) {
+        const query = new URLSearchParams(window.location.search);
+
+        var tweetList = [];
+
+        function parseTweets(){
+            if (tweetList === 0){
+                $('#tweet-container').text("No tweets currently found.")
+            } else {
+                // tweets exists
+                $.each(tweetList, function (k, v) {
                     var key = k;
                     var tweetContent = v.content;
                     var tweetUser = v.user;
                     var tweetTimeStamp = v.timestamp;
                     $('#tweet-container').append(
                         '<div class="media">' +
-                            '{% if t.image %}' +
-                                '<img src="..." class="mr-3" alt="...">' +
+                        '{% if t.image %}' +
+                            '<img src="..." class="mr-3" alt="...">' +
                             '{% endif %}' +
-                            '<div class="media-body">' +
-                            tweetContent + '<br/>' +
-                            'via ' + tweetUser.username + ' | ' + tweetTimeStamp + ' ago <a href="#">View</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '<hr/>'
+                        '<div class="media-body">' +
+                        tweetContent + '<br/>' +
+                        'via ' + tweetUser.username + ' | ' + tweetTimeStamp +
+                        ' ago <a href="#">View</a>' +
+                        '</div></div><hr/>'
                     )
-                })
-            },
-            error: function(data){
-                console.log("error", data)
+                });
             }
+        }
+
+        function fetchTweets(){
+            $.ajax({
+                url: '/api/tweet/',
+                data: { 'q': query.get('q') },
+                method: 'GET',
+                success: function(data){
+                    tweetList = data;
+                    parseTweets()
+                },
+                error: function(data){
+                    console.log("error", data)
+                }
+            })
+        }
+        fetchTweets()
+
+        $('#tweet-form').submit(function(event){
+            event.preventDefault();
+            var tweetData = $(this).serialize();
+
+
         })
+
     });
+
+
+
     </script>
 
 {% endblock %}
@@ -46,34 +75,13 @@
         <div class="col-9 text-center">
             {% if not request.GET.q %}
                 <div class="">
-                    {% include 'tweets/form.html' with form=create_form action_url=create_url btn_title='Tweet' %}
+                    {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Tweet' %}
                 </div>
                 <hr/>
             {% endif %}
             <div id="tweet-container">
 
             </div>
-{#            {% for t in object_list %}#}
-{#                <div class="media">#}
-{#                    {% if t.image %}#}
-{#                        <img src="..." class="mr-3" alt="...">#}
-{#                    {% endif %}#}
-{#                    <div class="media-body">#}
-{#                        {{ t.content}} <br/>#}
-{#                        via {{ t.user }} | {{ t.timestamp }} ago <a href="{{ t.get_absolute_url }}">View</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <hr/>#}
-{##}
-{#            {% empty %}#}
-{##}
-{#                {% if request.GET.q %}#}
-{#                    <p>No Tweets found.</p>#}
-{#                {% else %}#}
-{#                    <p>No tweets yet.</p>#}
-{#                {% endif %}#}
-{##}
-{#            {% endfor %}#}
         </div>
     </div>
 
