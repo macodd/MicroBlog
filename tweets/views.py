@@ -50,3 +50,9 @@ class TweetListView(ListView):
                 Q(user__username__icontains=query)
             )
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['create_form'] = TweetModelForm()
+        context['create_url'] = reverse_lazy('tweet:create')
+        return context

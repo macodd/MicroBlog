@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third paty
+    'crispy_forms',
+    'rest_framework',
+
     # local
     'tweets.apps.TweetsConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,5 +133,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static-cdn')
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 

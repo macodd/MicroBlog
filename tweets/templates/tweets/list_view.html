@@ -1,23 +1,80 @@
 {% extends 'base.html' %}
 
+{% block script %}
+
+    <script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/tweet/',
+            method: 'GET',
+            success: function(data){
+                $.each(data, function (k, v) {
+                    var key = k;
+                    var tweetContent = v.content;
+                    var tweetUser = v.user;
+                    var tweetTimeStamp = v.timestamp;
+                    $('#tweet-container').append(
+                        '<div class="media">' +
+                            '{% if t.image %}' +
+                                '<img src="..." class="mr-3" alt="...">' +
+                            '{% endif %}' +
+                            '<div class="media-body">' +
+                            tweetContent + '<br/>' +
+                            'via ' + tweetUser.username + ' | ' + tweetTimeStamp + ' ago <a href="#">View</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '<hr/>'
+                    )
+                })
+            },
+            error: function(data){
+                console.log("error", data)
+            }
+        })
+    });
+    </script>
+
+{% endblock %}
+
+{% block title %}Tweets | {{ block.super }}{% endblock %}
+
 {% block content %}
+    <div class="row" id="row1">
+        <div class="col-3 my-4">
+            {{ request.user }}
+        </div>
+        <div class="col-9 text-center">
+            {% if not request.GET.q %}
+                <div class="">
+                    {% include 'tweets/form.html' with form=create_form action_url=create_url btn_title='Tweet' %}
+                </div>
+                <hr/>
+            {% endif %}
+            <div id="tweet-container">
 
-{% include 'tweets/search_form.html' %}<br/>
-
-{% for t in object_list %}
-
-    <p>{{ t.content }}<br/>
-    {{ t.user }}<br/>
-    {{ t.timestamp|timesince }}</p><br/><br/>
-
-{% empty %}
-
-    {% if request.GET.q %}
-        <p>No Tweets found.</p>
-    {% else %}
-        <p>No tweets yet.</p>
-    {% endif %}
-
-{% endfor %}
+            </div>
+{#            {% for t in object_list %}#}
+{#                <div class="media">#}
+{#                    {% if t.image %}#}
+{#                        <img src="..." class="mr-3" alt="...">#}
+{#                    {% endif %}#}
+{#                    <div class="media-body">#}
+{#                        {{ t.content}} <br/>#}
+{#                        via {{ t.user }} | {{ t.timestamp }} ago <a href="{{ t.get_absolute_url }}">View</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <hr/>#}
+{##}
+{#            {% empty %}#}
+{##}
+{#                {% if request.GET.q %}#}
+{#                    <p>No Tweets found.</p>#}
+{#                {% else %}#}
+{#                    <p>No tweets yet.</p>#}
+{#                {% endif %}#}
+{##}
+{#            {% endfor %}#}
+        </div>
+    </div>
 
 {% endblock %}
