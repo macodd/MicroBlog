@@ -32,8 +32,35 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     {% block script %}{% endblock %}
+
+    <script>
+        $(document).ready(function () {
+            var typingTimer;
+            var doneInterval = 800;  // miliseconds
+            var searchInput = $('#navbar-search-form input[type=text]')
+            var searchQuery;
+
+            searchInput.keyup(function (event) {
+                searchQuery = $(this).val()
+                clearTimeout(typingTimer)  // clearing timer
+                typingTimer = setTimeout(doneSearchTyping, doneInterval)  // reset
+
+            })
+
+            searchInput.keydown(function (event) {
+                clearTimeout(typingTimer)
+            })
+
+            function doneSearchTyping(){
+                if (searchQuery){
+                    document.location.href = '/tweet/search/?q=' + searchQuery;
+                }
+            }
+        })
+
+    </script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" ></script> -->

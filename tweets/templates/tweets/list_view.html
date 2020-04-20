@@ -8,6 +8,7 @@
         const query = new URLSearchParams(window.location.search);
 
         var tweetList = [];
+        var nextTweetURL;
 
         function attachTweet(tweetValue, preppend){
             var tweetContent = tweetValue.content;
@@ -20,8 +21,9 @@
                     '{% endif %}' +
                 '<div class="media-body">' +
                 tweetContent + '<br/>' +
-                'via ' + tweetUser.username + ' | ' + tweetTimeStamp +
-                ' | <a href="#">View</a>' +
+                'via <a href="' + tweetUser.url + '">' +
+                tweetUser.username + '</a> | ' +
+                tweetTimeStamp + ' | <a href="#"></a>' +
                 '</div></div><hr/>'
 
             if (preppend)
@@ -42,13 +44,24 @@
             }
         }
 
-        function fetchTweets(){
+        function fetchTweets(url){
+            var fetchURL;
+            if (!url){
+                fetchURL = '/api/tweet/';
+            }
+            else {
+                fetchURL = url;
+            }
             $.ajax({
-                url: '/api/tweet/',
+                url: fetchURL,
                 data: { 'q': query.get('q') },
                 method: 'GET',
                 success: function(data){
-                    tweetList = data;
+                    tweetList = data.results;
+                    if (data.next)
+                        nextTweetURL = data.next;
+                    else
+                        $('#loadMore').css('display', 'none')
                     parseTweets()
                 },
                 error: function(data){
@@ -57,6 +70,13 @@
             })
         }
         fetchTweets()
+
+        $('#loadMore').click(function (event) {
+            event.preventDefault();
+            if (nextTweetURL) {
+                fetchTweets(nextTweetURL);
+            }
+        })
 
         var tweetForm = $('#tweet-form');
 
@@ -130,6 +150,7 @@
             <div id="tweet-container" class="text-center">
 
             </div>
+            <a href="#" id="loadMore">Load more Tweets</a>
         </div>
     </div>
 
