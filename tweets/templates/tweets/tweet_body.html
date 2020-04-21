@@ -1,0 +1,11 @@
+<div class="media">
+    {% if t.image %}
+        <img src="..." class="mr-3" alt="...">
+    {% endif %}
+    <div class="media-body">
+        {{ t.content }}<br/>
+        via <a href="/profiles/{{ t.user.username }}/">
+        {{ t.user }}</a> | {{ t.timestamp }} | <a href="#">View</a>
+    </div>
+</div>
+<hr/>

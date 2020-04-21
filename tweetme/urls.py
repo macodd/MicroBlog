@@ -19,9 +19,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from tweets.views import TweetListView
+from hashtags.views import HashTagView
 
 urlpatterns = [
     path('', TweetListView.as_view(), name='home'),
+    path('tags/<str:hashtag>/', HashTagView.as_view(), name='hashtag'),
     path('tweet/', include('tweets.urls', namespace='tweet')),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),

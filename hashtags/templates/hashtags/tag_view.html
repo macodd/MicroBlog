@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Tags | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="row" id="row1">
+        <div class="col-3 my-4">
+            <h1>{{ obj.tag }}</h1>
+        </div>
+        <div class="col-9">
+            {% for tag in obj.get_tweets %}
+                {%  include 'tweets/tweet_body.html' with t=tag %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
