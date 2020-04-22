@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block script %}
+
+    <script>
+
+        $(document).ready(function () {
+            loadTweetContainer("tweet-container");
+        });
+
+    </script>
+
+{% endblock %}
+
 {% block title %}Profile | {{ block.super }}{% endblock %}
 
 {% block content %}
@@ -27,7 +39,7 @@
             <hr/>
             <h3>Followed By</h3>
             {% for profile in object.followed_by.all %}
-                <a href="/{{ profile.user.username }}">{{ profile.user.username }}</a><br/>
+                <a href="/profiles/{{ profile.user.username }}">{{ profile.user.username }}</a><br/>
             {% empty %}
                 <h6>Not followed by anyone.</h6>
             {% endfor %}
@@ -35,13 +47,10 @@
         </div>
         <div class="col-lg-9 col-12">
             <h1>Tweets</h1>
-            {% for tweet in object.tweet_set.all %}
+            <div id="tweet-container" data-url="/api/{{ object.username }}/tweet/" class="text-center">
 
-                {% include 'tweets/tweet_body.html' with t=tweet %}
-
-            {% endfor %}
-
-            <hr/>
+            </div>
+            <a href="#" id="loadMore">Load more Tweets</a>
 
         </div>
     </div>

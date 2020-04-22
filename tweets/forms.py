@@ -14,6 +14,6 @@ class TweetModelForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
-        if content == "":
+        if content == "abc":
             raise forms.ValidationError("Can't be empty")
         return content

@@ -5,139 +5,7 @@
     <script>
 
     $(document).ready(function () {
-        const query = new URLSearchParams(window.location.search);
-
-        var tweetList = [];
-        var nextTweetURL;
-
-        function updateHashLinks() {
-            $('.media-body').each(function (data) {
-                var hashTagRegex = /(^|\s)#([\w\d-]+)/g
-                var newText = $(this).html().replace(hashTagRegex, "$1<a href='tags/$2/'>#$2</a>")
-                $(this).html(newText)
-            })
-        }
-
-        function attachTweet(tweetValue, preppend){
-            var tweetContent = tweetValue.content;
-            var tweetUser = tweetValue.user;
-            var tweetTimeStamp = tweetValue.date_display;
-
-            var tweetFormattedHTML = '<div class="media">' +
-                '{% if t.image %}' +
-                    '<img src="..." class="mr-3" alt="...">' +
-                    '{% endif %}' +
-                '<div class="media-body">' +
-                tweetContent + '<br/>' +
-                'via <a href="' + tweetUser.url + '">' +
-                tweetUser.username + '</a> | ' +
-                tweetTimeStamp + ' | <a href="#">View</a>' +
-                '</div></div><hr/>'
-
-            if (preppend)
-                $('#tweet-container').prepend(tweetFormattedHTML)
-            else
-                $('#tweet-container').append(tweetFormattedHTML)
-        }
-
-        function parseTweets(){
-            if (tweetList === 0){
-                $('#tweet-container').text("No tweets currently found.")
-            } else {
-                // tweets exists
-                $.each(tweetList, function (k, value) {
-                    var tweetKey = k;
-                    attachTweet(value, false);
-                });
-            }
-        }
-
-        function fetchTweets(url){
-            var fetchURL;
-            if (!url){
-                fetchURL = '/api/tweet/';
-            }
-            else {
-                fetchURL = url;
-            }
-            $.ajax({
-                url: fetchURL,
-                data: { 'q': query.get('q') },
-                method: 'GET',
-                success: function(data){
-                    tweetList = data.results;
-                    if (data.next)
-                        nextTweetURL = data.next;
-                    else
-                        $('#loadMore').css('display', 'none')
-                    parseTweets()
-                    updateHashLinks()
-                },
-                error: function(data){
-                    console.log("error", data)
-                }
-            })
-        }
-        fetchTweets()
-
-        $('#loadMore').click(function (event) {
-            event.preventDefault();
-            if (nextTweetURL) {
-                fetchTweets(nextTweetURL);
-            }
-        })
-
-        var tweetForm = $('#tweet-form');
-
-        var charsStart = 140;
-        var charsCurrent = 0;
-
-        tweetForm.append("<span id='tweetCharsLeft'>" + charsStart + "</span>");
-
-        $('#tweet-form textarea').keyup(function (event) {
-            var tweetValue = $(this).val();
-            var spanTweet = $('#tweetCharsLeft');
-            charsCurrent = charsStart - tweetValue.length;
-            spanTweet.text(charsCurrent);
-
-            if (charsCurrent > 0) {
-                spanTweet.removeClass("grey-color");
-                spanTweet.removeClass("red-color");
-            }
-            else if (charsCurrent == 0) {
-                spanTweet.addClass("grey-color");
-                spanTweet.removeClass("red-color");
-            } else {
-                spanTweet.addClass("red-color");
-                spanTweet.removeClass("grey-color");
-            }
-        })
-
-        tweetForm.submit(function(event){
-            event.preventDefault();
-            var this_ = $(this)
-            var tweetData = $(this).serialize();
-
-            if (charsCurrent >= 0) {
-                $.ajax({
-                    url: '/api/tweet/create/',
-                    data: tweetData,
-                    method: 'POST',
-                    success: function (data) {
-                        this_.find("input[type=text], textarea").val("")
-                        attachTweet(data, true);
-                        updateHashLinks()
-                    },
-                    error: function (data) {
-                        console.log("error", data)
-                    }
-                })
-            }
-            else {
-                console.log("Too long.")
-            }
-        })
-
+        loadTweetContainer("tweet-container");
     });
 
     </script>
@@ -148,17 +16,17 @@
 
 {% block content %}
     <div class="row" id="row1">
-        <div class="col-3 my-4">
+        <div class="col-lg-3 col-12 my-4">
             {{ request.user }}
         </div>
-        <div class="col-9">
+        <div class="col-lg-9 col-12">
             {% if not request.GET.q %}
                 <div class="">
                     {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Tweet' %}
                 </div>
                 <hr/>
             {% endif %}
-            <div id="tweet-container" class="text-center">
+            <div id="tweet-container" data-url="/api/tweet/" class="text-center">
 
             </div>
             <a href="#" id="loadMore">Load more Tweets</a>

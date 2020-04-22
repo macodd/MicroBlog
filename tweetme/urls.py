@@ -27,6 +27,7 @@ urlpatterns = [
     path('tweet/', include('tweets.urls', namespace='tweet')),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
+    path('api/profiles/', include('accounts.api.urls', namespace='profile-api')),
 
     path('admin/', admin.site.urls),
 ]
