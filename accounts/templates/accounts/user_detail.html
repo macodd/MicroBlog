@@ -17,7 +17,7 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-lg-3 col-12">
+        <div class="col-lg-3 col-12" id="user-container">
             <h1>{{ object.username }}</h1>
             <hr/>
             <p>{{ object.followed_by.all.count }}{% if object.followed_by.all.count == 1 %} Follower{% else %} Followers{% endif %}</p>
@@ -43,14 +43,16 @@
             {% empty %}
                 <h6>Not followed by anyone.</h6>
             {% endfor %}
+            <hr/>
 
         </div>
         <div class="col-lg-9 col-12">
             <h1>Tweets</h1>
-            <div id="tweet-container" data-url="/api/{{ object.username }}/tweet/" class="text-center">
+            <div id="tweet-container" data-url="/api/profiles/{{ object.username }}/tweet/" class="text-center">
 
             </div>
             <a href="#" id="loadMore">Load more Tweets</a>
+
 
         </div>
     </div>

@@ -56,7 +56,7 @@ class UserProfile(models.Model):
 
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
-        new_profile = UserProfile.objects.get_or_create(user=instance)
+        UserProfile.objects.get_or_create(user=instance)
         # celery + redis
 
 

@@ -12,6 +12,7 @@ from django.views.generic import (
     View
 )
 
+from accounts.models import UserProfile
 from .models import Tweet
 from .forms import TweetModelForm
 from .mixins import FormUserNeededMixin, UserOwnerMixin
@@ -21,7 +22,7 @@ class RetweetView(View):
     def get(self, request, pk, *args, **kwargs):
         tweet = get_object_or_404(Tweet, pk=pk)
         if request.user.is_authenticated:
-            new_tweet = Tweet.objects.retweet(request.user, tweet)
+            Tweet.objects.retweet(request.user, tweet)
             return redirect('home')
         return HttpResponseRedirect(tweet.get_absolute_url())
 

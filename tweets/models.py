@@ -16,11 +16,12 @@ class TweetManager(models.Manager):
             og_parent = parent_obj
 
         qs = self.get_queryset().filter(
-            user=user, parent=og_parent).filter(
+            user=user, parent=og_parent
+            ).filter(
                 timestamp__year=now().year,
                 timestamp__month=now().month,
                 timestamp__day=now().day
-        )
+            )
 
         if qs.exists():
             return None
@@ -28,10 +29,19 @@ class TweetManager(models.Manager):
         obj = self.model(
             parent=og_parent,
             user=user,
-            content=parent_obj.content
+            content=og_parent.content
         )
         obj.save()
         return obj
+
+    def like_toggle(self, user, tweet_obj):
+        if user in tweet_obj.liked.all():
+            is_liked = False
+            tweet_obj.liked.remove(user)
+        else:
+            is_liked = True
+            tweet_obj.liked.add(user)
+        return is_liked
 
 
 class Tweet(models.Model):
@@ -43,6 +53,9 @@ class Tweet(models.Model):
     user        = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     on_delete=models.CASCADE
                                     )
+    liked       = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                         blank=True,
+                                         related_name='liked')
     content     = models.CharField(max_length=140)
     timestamp   = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)

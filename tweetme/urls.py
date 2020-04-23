@@ -19,15 +19,24 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from tweets.views import TweetListView
+from tweets.api.views import SearchAPIView
+
 from hashtags.views import HashTagView
+from hashtags.api.views import HashTagAPIView
+
+from .views import SearchView
+
 
 urlpatterns = [
     path('', TweetListView.as_view(), name='home'),
-    path('tags/<str:hashtag>/', HashTagView.as_view(), name='hashtag'),
     path('tweet/', include('tweets.urls', namespace='tweet')),
+    path('search/', SearchView.as_view(), name='search'),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
+    path('api/search/',SearchAPIView.as_view(), name='search-api'),
+    path('api/tag/<str:hashtag>/',HashTagAPIView.as_view(), name='tag-api'),
     path('api/profiles/', include('accounts.api.urls', namespace='profile-api')),
+    path('tags/<str:hashtag>/', HashTagView.as_view(), name='hashtag'),
 
     path('admin/', admin.site.urls),
 ]

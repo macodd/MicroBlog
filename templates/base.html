@@ -19,6 +19,14 @@
         .grey-color {
             color: #c6c8ca;
         }
+        .media-focus {
+            background-color: lightyellow;
+        }
+        textarea {
+            resize: none;
+            max-width: 500px;
+            max-height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +42,7 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-        function loadTweetContainer(tweetContainerID) {
+        function loadTweetContainer(tweetContainerID, fetchOneID) {
             const query = new URLSearchParams(window.location.search);
             var initial_url;
             var tweetContainer;
@@ -50,16 +58,36 @@
             var tweetList = [];
             var nextTweetURL;
 
+            $(document.body).on("click", '#tweetLiked', function (event) {
+                event.preventDefault();
+                var this_ = $(this);
+                var tweetId = this_.attr("data-id");
+                var likedUrl = '/api/tweet/' + tweetId + '/liked/';
+                $.ajax({
+                    method: "GET",
+                    url: likedUrl,
+                    success: function (data) {
+                        if(data.liked)
+                            this_.text("Liked");
+                        else
+                            this_.text("Unliked");
+                    },
+                    error: function (data) {
+                        console.log("error", data);
+                    }
+                })
+            })
+
             $(document.body).on("click", '#retweetLink', function (event) {
                 event.preventDefault();
-                var url = "/api" + $(this).attr("href")
+                var url = "/api" + $(this).attr("href");
                 $.ajax({
                     method: "GET",
                     url: url,
                     success: function (data) {
-                        if (initial_url === '/api/tweet/'){
-                            attachTweet(data, true, true);
-                            updateHashLinks()
+                        if (initial_url === "/api/tweet/") {
+                            attachTweet(data, true);
+                            updateHashLinks();
                         }
                     },
                     error: function (data) {
@@ -82,43 +110,59 @@
                 })
             }
 
-            function attachTweet(tweetValue, preppend, retweet) {
-                var tweetContent = tweetValue.content;
-                var tweetUser = tweetValue.user;
+            function formatTweet(tweetValue) {
+                var tweet;
+                var container;
                 var tweetId = tweetValue.id;
-                var tweetTimeStamp = tweetValue.date_display;
+
+                var preContent = "";
+
+                var openingContainerDiv = '<div class="media">';
+
+                if (tweetValue.id === fetchOneID){
+                    openingContainerDiv = '<div class="media media-focus">'
+                    setTimeout(function () {
+                        $('.media-focus').css("background-color", 'white')
+                    }, 2000)
+                }
+
+                if (tweetValue.parent){
+                    tweetId = tweetValue.parent.id;
+                    tweetValue = tweetValue.parent;
+                    preContent = '<span class="grey-color">ReTweet via @' +
+                        tweetValue.user.username +
+                        '</span><br/>'
+                }
+
+                var verb = 'Like'
+                if (tweetValue.did_like)
+                    verb = 'Unlike'
+
+                var tweetImage = '{% if t.image %}' +
+                    '<img src="..." class="mr-3" alt="...">' +
+                    '{% endif %}';
+
+                tweet = tweetValue.content + '<br/>' +
+                    'via <a href="' + tweetValue.user.url + '">' +
+                    tweetValue.user.username + '</a> | ' +
+                    tweetValue.date_display + ' | <a href="/tweet/' + tweetId + '/">View</a> | ' +
+                    '<a id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Retweet</a> | ' +
+                    '<a href="#" id="tweetLiked" data-id="' + tweetId + '">' +
+                    verb + '(' + tweetValue.likes +') </a>';
+
+                container = openingContainerDiv  + tweetImage +
+                    '<div class="media-body">' + preContent + tweet +
+                    '</div></div><hr/>';
+
+                return container;
+            }
+
+            function attachTweet(tweetValue, preppend) {
                 var tweetFormattedHTML;
 
-                if (retweet && tweetValue.parent) {
-                    var mainTweet = tweetValue.parent;
+                tweetFormattedHTML = formatTweet(tweetValue);
 
-                    tweetFormattedHTML = '<div class="media">' +
-                        '{% if t.image %}' +
-                            '<img src="..." class="mr-3" alt="...">' +
-                            '{% endif %}' +
-                        '<div class="media-body">' +
-                        '<span class="grey-color">ReTweet via ' + tweetUser.username +
-                        ' on ' + tweetTimeStamp + '</span><br/>' +
-                        mainTweet.content + '<br/>' +
-                        'via <a href="' + mainTweet.user.url + '">' +
-                        mainTweet.user.username + '</a> | ' +
-                        mainTweet.date_display + ' | <a href="/tweet/' + mainTweet.id + '">View</a> | ' +
-                        '<a id="retweetLink" href="/tweet/' + mainTweet.id + '/retweet/">Retweet</a>' +
-                        '</div></div><hr/>'
-                } else {
-                    tweetFormattedHTML = '<div class="media">' +
-                        '{% if t.image %}' +
-                            '<img src="..." class="mr-3" alt="...">' +
-                            '{% endif %}' +
-                        '<div class="media-body">' +
-                        tweetContent + '<br/>' +
-                        'via <a href="' + tweetUser.url + '">' +
-                        tweetUser.username + '</a> | ' +
-                        tweetTimeStamp + ' | <a href="/tweet/' + tweetId + '">View</a> | ' +
-                        '<a id="retweetLink" href="/tweet/' + tweetValue.id + '/retweet/">Retweet</a>' +
-                        '</div></div><hr/>'
-                }
-                if (preppend)
+                if (preppend === true)
                     tweetContainer.prepend(tweetFormattedHTML);
                 else
                     tweetContainer.append(tweetFormattedHTML);
@@ -126,12 +170,12 @@
 
             function parseTweets() {
                 if (tweetList === 0) {
-                    tweetContainer.text("No tweets currently found.")
+                    tweetContainer.text("No tweets currently found.");
                 } else {
                     // tweets exists
                     $.each(tweetList, function (k, value) {
                         if (value.parent) {
-                            attachTweet(value, false, true);
+                            attachTweet(value, false);
                         } else {
                             attachTweet(value);
                         }
@@ -155,17 +199,38 @@
                         if (data.next)
                             nextTweetURL = data.next;
                         else
-                            $('#loadMore').css('display', 'none')
+                            $('#loadMore').css('display', 'none');
                         parseTweets();
                         updateHashLinks();
                     },
                     error: function (data) {
-                        console.log("error", data)
+                        console.log("error", data);
                     }
                 })
             }
 
-            fetchTweets()
+            function fetchSingle(fetchOneID) {
+                var fetchURL = '/api/tweet/' + fetchOneID + '/'
+                $.ajax({
+                    url: fetchURL,
+                    method: 'GET',
+                    success: function (data) {
+                        tweetList = [data];
+                        parseTweets();
+                        updateHashLinks();
+                    },
+                    error: function (data) {
+                        console.log("error", data);
+                    }
+                })
+            }
+
+            if (fetchOneID){
+                fetchSingle(fetchOneID);
+            } else {
+                fetchTweets();
+            }
+
 
             $('#loadMore').click(function (event) {
                 event.preventDefault();
@@ -246,7 +311,7 @@
 
             function doneSearchTyping(){
                 if (searchQuery){
-                    document.location.href = '/tweet/search/?q=' + searchQuery;
+                    document.location.href = '/search/?q=' + searchQuery;
                 }
             }
         })
