@@ -4,7 +4,10 @@ from .models import Tweet
 
 
 class TweetModelForm(forms.ModelForm):
-    content = forms.CharField(label="", widget=forms.Textarea(attrs={'placeholder': 'Your message', 'class': 'form-control'}))
+    content = forms.CharField(label="",
+                              widget=forms.Textarea(
+                                  attrs={'placeholder': 'Your message',
+                                         'class': 'form-control'}))
 
     class Meta:
         model = Tweet
@@ -14,6 +17,6 @@ class TweetModelForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
-        if content == "abc":
+        if content == "":
             raise forms.ValidationError("Can't be empty")
         return content

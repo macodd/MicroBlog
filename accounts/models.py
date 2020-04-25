@@ -1,14 +1,28 @@
+import os
 from django.db import models
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 
 
+def get_filename_ext(filepath):
+    basename = os.path.basename(filepath)
+    name, ext = os.path.splitext(basename)
+    return name, ext
+
+
+def upload_image_path(instance, filename):
+    new_filename = instance.user.username
+    name, ext = get_filename_ext(filename)
+    final_filename = f'{new_filename}{ext}'
+    return f'images/{new_filename}/{final_filename}'
+
+
 class UserProfileManager(models.Manager):
     use_for_related_fields = True
 
     def all(self):
-        qs  = self.get_queryset().all()
+        qs = self.get_queryset().all()
         try:
             if self.instance:
                 qs = qs.exclude(user=self.instance)
@@ -26,7 +40,8 @@ class UserProfileManager(models.Manager):
             added = True
         return added
 
-    def is_following(self, user, followed_by_user):
+    @staticmethod
+    def is_following(user, followed_by_user):
         user_profile, created = UserProfile.objects.get_or_create(user=user)
         if created:
             return False
@@ -37,6 +52,7 @@ class UserProfileManager(models.Manager):
 
 class UserProfile(models.Model):
     user        = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile', on_delete=models.CASCADE)
+    image       = models.ImageField(default='images/default_avatar.jpg', upload_to=upload_image_path, blank=True, null=True)
     following   = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='followed_by')
 
     objects = UserProfileManager()

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from  rest_framework.response import Response
@@ -7,6 +8,7 @@ from django.db.models import Q
 from .pagination import StandardResultsPagination
 from .serializers import TweetModelSerializer
 from tweets.models import Tweet
+
 
 
 class LikeTweetAPIView(APIView):
@@ -59,8 +61,8 @@ class TweetListAPIView(ListAPIView):
         if requested_user:
             qs = Tweet.objects.filter(user__username=requested_user).order_by('-timestamp')
         else:
-            i_follow = self.request.user.profile.get_following()
-            qs1 = Tweet.objects.filter(user__in=i_follow).order_by('-timestamp')
+            my_followers = self.request.user.profile.get_following()
+            qs1 = Tweet.objects.filter(user__in=my_followers).order_by('-timestamp')
             qs2 = Tweet.objects.filter(user=self.request.user)
             qs = (qs1 | qs2).distinct().order_by('-timestamp')
         query = self.request.GET.get('q', None)

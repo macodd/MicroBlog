@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 
 from django.views.generic import (
     DetailView,
@@ -12,22 +11,19 @@ from django.views.generic import (
     View
 )
 
-from accounts.models import UserProfile
 from .models import Tweet
 from .forms import TweetModelForm
 from .mixins import FormUserNeededMixin, UserOwnerMixin
 
 
-class RetweetView(View):
+class RetweetView(LoginRequiredMixin, View):
     def get(self, request, pk, *args, **kwargs):
         tweet = get_object_or_404(Tweet, pk=pk)
-        if request.user.is_authenticated:
-            Tweet.objects.retweet(request.user, tweet)
-            return redirect('home')
-        return HttpResponseRedirect(tweet.get_absolute_url())
+        Tweet.objects.retweet(request.user, tweet)
+        return redirect('home')
 
 
-class TweetCreateView(FormUserNeededMixin, CreateView):
+class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
     template_name   = 'tweets/create_view.html'
     model           = Tweet
     form_class      = TweetModelForm
@@ -39,18 +35,18 @@ class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
     form_class      = TweetModelForm
 
 
-class TweetDeleteView(DeleteView):
+class TweetDeleteView(LoginRequiredMixin, DeleteView):
     template_name   = 'tweets/delete_view.html'
     model           = Tweet
     success_url     = reverse_lazy('tweet:list')
 
 
-class TweetDetailView(DetailView):
+class TweetDetailView(LoginRequiredMixin, DetailView):
     template_name   = 'tweets/detail_view.html'
     model           = Tweet
 
 
-class TweetListView(ListView):
+class TweetListView(LoginRequiredMixin, ListView):
     template_name   = 'tweets/list_view.html'
     model = Tweet
 

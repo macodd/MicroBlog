@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from django.conf.urls.static import static
 
 from tweets.views import TweetListView
 from tweets.api.views import SearchAPIView
 
 from hashtags.views import HashTagView
 from hashtags.api.views import HashTagAPIView
+
+from accounts.views import UserRegisterView
 
 from .views import SearchView
 
@@ -31,6 +32,8 @@ urlpatterns = [
     path('', TweetListView.as_view(), name='home'),
     path('tweet/', include('tweets.urls', namespace='tweet')),
     path('search/', SearchView.as_view(), name='search'),
+    path('', include('django.contrib.auth.urls')),
+    path('register/', UserRegisterView.as_view(), name='register'),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
     path('api/search/',SearchAPIView.as_view(), name='search-api'),
@@ -42,4 +45,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    from django.conf.urls.static import static
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -7,6 +7,8 @@ from django.utils.timezone import now
 
 from hashtags.signals import parsed_hashtags
 
+from accounts.models import UserProfile
+
 
 class TweetManager(models.Manager):
     def retweet(self, user, parent_obj):
@@ -51,7 +53,7 @@ class Tweet(models.Model):
                                     on_delete=models.CASCADE
                                     )
     user        = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    on_delete=models.CASCADE
+                                    on_delete=models.CASCADE,
                                     )
     liked       = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                          blank=True,

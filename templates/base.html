@@ -32,7 +32,7 @@
 <body>
     {% include 'navbar.html' %}
 
-    <div class="container">
+    <div class="container my-4">
         {% block content %}
 
         {% endblock %}
@@ -44,8 +44,8 @@
     <script>
         function loadTweetContainer(tweetContainerID, fetchOneID) {
             const query = new URLSearchParams(window.location.search);
-            var initial_url;
-            var tweetContainer;
+            let initial_url;
+            let tweetContainer;
 
             if (tweetContainerID){
                 tweetContainer = $("#" + tweetContainerID);
@@ -55,14 +55,15 @@
 
             initial_url = tweetContainer.attr("data-url") || '/api/tweet/';
 
-            var tweetList = [];
-            var nextTweetURL;
+            let tweetList = [];
+            let nextTweetURL;
 
             $(document.body).on("click", '#tweetLiked', function (event) {
                 event.preventDefault();
-                var this_ = $(this);
-                var tweetId = this_.attr("data-id");
-                var likedUrl = '/api/tweet/' + tweetId + '/liked/';
+                const this_ = $(this);
+                const tweetId = this_.attr("data-id");
+                const likedUrl = '/api/tweet/' + tweetId + '/liked/';
+
                 $.ajax({
                     method: "GET",
                     url: likedUrl,
@@ -80,7 +81,7 @@
 
             $(document.body).on("click", '#retweetLink', function (event) {
                 event.preventDefault();
-                var url = "/api" + $(this).attr("href");
+                const url = "/api" + $(this).attr("href");
                 $.ajax({
                     method: "GET",
                     url: url,
@@ -98,9 +99,9 @@
 
             function updateHashLinks() {
                 $('.media-body').each(function (data) {
-                    var hashTagRegex = /(^|\s)#([\w\d-]+)/g;
-                    var userNameRegex = /(^|\s)@([\w\d-]+)/g;
-                    var newText;
+                    const hashTagRegex = /(^|\s)#([\w\d-]+)/g;
+                    const userNameRegex = /(^|\s)@([\w\d-]+)/g;
+                    let newText;
 
                     newText = $(this).html().replace(hashTagRegex, "$1<a href='/tags/$2/'>#$2</a>");
                     $(this).html(newText);
@@ -111,13 +112,14 @@
             }
 
             function formatTweet(tweetValue) {
-                var tweet;
-                var container;
-                var tweetId = tweetValue.id;
+                let tweet;
+                let container;
+                let tweetUser;
+                let tweetId = tweetValue.id;
 
-                var preContent = "";
+                let preContent = "";
 
-                var openingContainerDiv = '<div class="media">';
+                let openingContainerDiv = '<div class="media">';
 
                 if (tweetValue.id === fetchOneID){
                     openingContainerDiv = '<div class="media media-focus">'
@@ -127,20 +129,18 @@
                 }
 
                 if (tweetValue.parent){
+                    tweetUser = tweetValue.user.username;
                     tweetId = tweetValue.parent.id;
                     tweetValue = tweetValue.parent;
                     preContent = '<span class="grey-color">ReTweet via @' +
-                        tweetValue.user.username +
-                        '</span><br/>'
+                        tweetUser + '</span><br/>'
                 }
 
-                var verb = 'Like'
+                let verb = 'Like';
                 if (tweetValue.did_like)
                     verb = 'Unlike'
 
-                var tweetImage = '{% if t.image %}' +
-                    '<img src="..." class="mr-3" alt="...">' +
-                    '{% endif %}';
+                {#const tweetImage = '<img src="' + userImage + '" class="mr-3" alt="' + tweetUser + '">';#}
 
                 tweet = tweetValue.content + '<br/>' +
                     'via <a href="' + tweetValue.user.url + '">' +
@@ -150,7 +150,7 @@
                     '<a href="#" id="tweetLiked" data-id="' + tweetId + '">' +
                     verb + '(' + tweetValue.likes +') </a>';
 
-                container = openingContainerDiv  + tweetImage +
+                container = openingContainerDiv +
                     '<div class="media-body">' + preContent + tweet +
                     '</div></div><hr/>';
 
@@ -158,7 +158,7 @@
             }
 
             function attachTweet(tweetValue, preppend) {
-                var tweetFormattedHTML;
+                let tweetFormattedHTML;
 
                 tweetFormattedHTML = formatTweet(tweetValue);
 
@@ -184,7 +184,7 @@
             }
 
             function fetchTweets(url) {
-                var fetchURL;
+                let fetchURL;
                 if (!url) {
                     fetchURL = initial_url;
                 } else {
@@ -195,6 +195,7 @@
                     data: {'q': query.get('q')},
                     method: 'GET',
                     success: function (data) {
+                        console.log(data)
                         tweetList = data.results;
                         if (data.next)
                             nextTweetURL = data.next;
@@ -210,7 +211,7 @@
             }
 
             function fetchSingle(fetchOneID) {
-                var fetchURL = '/api/tweet/' + fetchOneID + '/'
+                const fetchURL = '/api/tweet/' + fetchOneID + '/';
                 $.ajax({
                     url: fetchURL,
                     method: 'GET',
@@ -239,16 +240,16 @@
                 }
             })
 
-            var tweetForm = $('#tweet-form');
+            const tweetForm = $('#tweet-form');
 
-            var charsStart = 140;
-            var charsCurrent = 0;
+            const charsStart = 140;
+            let charsCurrent = 0;
 
             tweetForm.append("<span id='tweetCharsLeft'>" + charsStart + "</span>");
 
             $('#tweet-form textarea').keyup(function (event) {
-                var tweetValue = $(this).val();
-                var spanTweet = $('#tweetCharsLeft');
+                const tweetValue = $(this).val();
+                const spanTweet = $('#tweetCharsLeft');
                 charsCurrent = charsStart - tweetValue.length;
                 spanTweet.text(charsCurrent);
 
@@ -266,8 +267,8 @@
 
             tweetForm.submit(function (event) {
                 event.preventDefault();
-                var this_ = $(this);
-                var tweetData = $(this).serialize();
+                const this_ = $(this);
+                const tweetData = $(this).serialize();
 
                 if (charsCurrent >= 0) {
                     $.ajax({
@@ -275,9 +276,11 @@
                         data: tweetData,
                         method: 'POST',
                         success: function (data) {
-                            this_.find("input[type=text], textarea").val("")
+                            this_.find("input[type=text], textarea").val("");
+                            $('#tweetCharsLeft').text(140);
                             attachTweet(data, true);
                             updateHashLinks();
+
                         },
                         error: function (data) {
                             console.log("error", data);
@@ -289,34 +292,9 @@
             })
         }
     </script>
+
     {% block script %}{% endblock %}
 
-    <script>
-        $(document).ready(function () {
-            var typingTimer;
-            var doneInterval = 800;  // miliseconds
-            var searchInput = $('#navbar-search-form input[type=text]')
-            var searchQuery;
-
-            searchInput.keyup(function (event) {
-                searchQuery = $(this).val()
-                clearTimeout(typingTimer)  // clearing timer
-                typingTimer = setTimeout(doneSearchTyping, doneInterval)  // reset
-
-            })
-
-            searchInput.keydown(function (event) {
-                clearTimeout(typingTimer)
-            })
-
-            function doneSearchTyping(){
-                if (searchQuery){
-                    document.location.href = '/search/?q=' + searchQuery;
-                }
-            }
-        })
-
-    </script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" ></script> -->

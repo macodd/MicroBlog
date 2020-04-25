@@ -2,11 +2,13 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
+from accounts.models import UserProfile
+
 User = get_user_model()
 
 
 class UserDisplaySerializer(serializers.ModelSerializer):
-    follower_count = serializers.SerializerMethodField()
+    follower_count = serializers.SerializerMethodField(source='get_follower_count')
     url = serializers.SerializerMethodField(source='get_url')
 
     class Meta:
@@ -20,7 +22,9 @@ class UserDisplaySerializer(serializers.ModelSerializer):
         ]
 
     def get_follower_count(self, obj):
-        return 0
+        qs = UserProfile.objects.filter(user__username=obj)
+        profile = qs.first()
+        return profile.get_following().count()
 
     def get_url(self, obj):
         return reverse_lazy('profiles:detail', kwargs={'username': obj.username})
