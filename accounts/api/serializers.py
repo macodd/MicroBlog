@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 from django.urls import reverse_lazy
 
 from accounts.models import UserProfile
@@ -10,6 +10,7 @@ User = get_user_model()
 class UserDisplaySerializer(serializers.ModelSerializer):
     follower_count = serializers.SerializerMethodField(source='get_follower_count')
     url = serializers.SerializerMethodField(source='get_url')
+    image = serializers.SerializerMethodField(source='get_image')
 
     class Meta:
         model = User
@@ -18,8 +19,13 @@ class UserDisplaySerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'follower_count',
+            'image',
             'url',
         ]
+
+    def get_image(self, obj):
+        qs = UserProfile.objects.filter(user__username=obj)
+        return qs.first().image.url
 
     def get_follower_count(self, obj):
         qs = UserProfile.objects.filter(user__username=obj)

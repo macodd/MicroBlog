@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic.edit import FormView
-from django.views.generic import DetailView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, get_object_or_404, render
+from django.views.generic import DetailView, View, FormView
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm
 
 from .models import UserProfile
 
@@ -23,8 +24,8 @@ class UserRegisterView(FormView):
         password = form.cleaned_data.get('password2')
         new_user = User.objects.create(
             username=username,
-            first_name=first_name,
-            last_name=last_name,
+            first_name=first_name.title(),
+            last_name=last_name.title(),
             email=email
         )
         new_user.set_password(password)
@@ -32,11 +33,11 @@ class UserRegisterView(FormView):
         return super().form_valid(form)
 
 
-class UserDetailView(DetailView):
-    template_name = 'accounts/user_detail.html'
-    slug_url_kwarg = 'username'
-    slug_field = 'username'
-    model = User
+class UserDetailView(LoginRequiredMixin, DetailView):
+    template_name   = 'accounts/user_detail.html'
+    slug_url_kwarg  = 'username'
+    slug_field      = 'username'
+    model           = User
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -45,8 +46,25 @@ class UserDetailView(DetailView):
         return context
 
 
-class UserFollowView(View):
+class UserFollowView(LoginRequiredMixin, View):
     def get(self, request, username):
         toggle_user = get_object_or_404(User, username__iexact=username)
         UserProfile.objects.toggle_follow(request.user, toggle_user)
         return redirect("profiles:detail", username=username)
+
+
+def user_update_view(request, *args, **kwargs):
+    username = kwargs.get('username')
+    if request.user.username != username:
+        messages.add_message(request, messages.ERROR, 'Unauthorized')
+        return redirect('profiles:detail', username=request.user.username)
+    template = 'accounts/user_update.html'
+    user = UserProfile.objects.get(user__username=username)
+    form = UserUpdateForm(request.POST or None, request.FILES or None, request=request)
+    context = {
+        'user_img': user.image,
+        'form': form
+    }
+    if form.is_valid():
+        return redirect('profiles:detail', username=username)
+    return render(request, template, context)

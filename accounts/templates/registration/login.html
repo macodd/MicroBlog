@@ -17,16 +17,14 @@ $(document).ready(function () {
                 <h1>Login</h1>
                 <hr/>
                 {% if form.errors %}
-                    <p>Your username and password didn't match. Please try again.</p>
-                {% endif %}
-
-                {% if next %}
-                    {% if user.is_authenticated %}
-                        <p>Your account doesn't have access to this page. To proceed,
-                            please login with an account that has access.</p>
-                    {% else %}
-                        <p>Please login to see this page.</p>
-                    {% endif %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <strong>Holy guacamole! </strong>{{ error|escape }}
+                        {% endfor %}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 {% endif %}
 
                 <div style="padding: 30px">
@@ -43,7 +41,7 @@ $(document).ready(function () {
                         </div>
                         <br/>
                         <button type="submit" class="btn btn-primary">Login</button>
-                        <input type="hidden" name="next" value="{{ next }}">
+                        <input type="hidden" name="next" value="{% url 'home' %}">
                     </form>
                 </div>
 

@@ -10,7 +10,6 @@ from .serializers import TweetModelSerializer
 from tweets.models import Tweet
 
 
-
 class LikeTweetAPIView(APIView):
     permission_classes      = [IsAuthenticated]
 

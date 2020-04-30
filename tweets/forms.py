@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.safestring import mark_safe
 
 from .models import Tweet
 
@@ -19,4 +20,4 @@ class TweetModelForm(forms.ModelForm):
         content = self.cleaned_data.get('content')
         if content == "":
             raise forms.ValidationError("Can't be empty")
-        return content
+        return mark_safe(content)

@@ -4,6 +4,11 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 
+from PIL import Image as Img
+from PIL import ExifTags
+from io import BytesIO
+from django.core.files import File
+
 
 def get_filename_ext(filepath):
     basename = os.path.basename(filepath)
@@ -40,8 +45,7 @@ class UserProfileManager(models.Manager):
             added = True
         return added
 
-    @staticmethod
-    def is_following(user, followed_by_user):
+    def is_following(self, user, followed_by_user):
         user_profile, created = UserProfile.objects.get_or_create(user=user)
         if created:
             return False
@@ -68,6 +72,28 @@ class UserProfile(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('profiles:detail', kwargs={'username': self.user.username})
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            pil_image = Img.open(BytesIO(self.image.read()))
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pil_image._getexif().items())
+
+            if exif[orientation] == 3:
+                pil_image = pil_image.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pil_image = pil_image.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pil_image = pil_image.rotate(90, expand=True)
+
+            output = BytesIO()
+            pil_image.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.image = File(output, self.image.name)
+
+        return super().save(*args, **kwargs)
 
 
 def post_save_user_receiver(sender, instance, created, **kwargs):

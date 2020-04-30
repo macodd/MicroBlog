@@ -30,10 +30,11 @@
             </div>
             <a href="#" id="loadMore">Load more Tweets</a>
         </div>
-        <div class="col-lg-3 col-12 my-4">
+        <div class="col-lg-3 col-12">
             <h1>Users</h1>
             <hr/>
             {% for user in users %}
+                <img src="{{ user.profile.image.url }}" class="avatar mr-2" alt="null"/>
                 <a href="/profiles/{{ user.username }}/">{{ user.username }}</a><br/>
             {% empty %}
                 <p>No users found</p>

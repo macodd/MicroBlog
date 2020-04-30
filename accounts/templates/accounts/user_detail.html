@@ -16,12 +16,22 @@
 
 {% block content %}
 
+    {% if messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                <strong>Holy guacamole! </strong>{{ message|escape }}
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-lg-3 col-12" id="user-container" data-url="/api/profiles/{{ object.username }}">
-            {% if object.profile.image %}
-                <img src="{{ object.profile.image.url }}" class="mr-3" alt="{{ object.username }}" style="max-height: 200px; max-width: 200px">
-            {% endif %}
+            <img src="{{ object.profile.image.url }}" class="mr-3 mb-3" alt="{{ object.username }}" style="max-height: 200px; max-width: 200px">
             <h1>{{ object.username }}</h1>
+            <p>{{ object.first_name }} {{ object.last_name }}</p>
             <hr/>
             <p>{{ object.followed_by.all.count }}{% if object.followed_by.all.count == 1 %} Follower{% else %} Followers{% endif %}</p>
             <p>
@@ -34,6 +44,7 @@
 
             <h3>Following <small>{{ object.profile.get_following.count }}</small></h3>
             {% for user in object.profile.get_following %}
+                <img src="{{ user.profile.image.url }}" class="avatar" alt="null"/>
                 <a href="/profiles/{{ user.username }}">{{ user.username }}</a><br/>
             {% empty %}
                 <h6>Not following anyone.</h6>
@@ -42,16 +53,25 @@
             <hr/>
             <h3>Followed By</h3>
             {% for profile in object.followed_by.all %}
+                <img src="{{ profile.image.url }}" class="avatar" alt="null"/>
                 <a href="/profiles/{{ profile.user.username }}">{{ profile.user.username }}</a><br/>
             {% empty %}
                 <h6>Not followed by anyone.</h6>
             {% endfor %}
             <hr/>
 
+            <div class="text-center">
+                <small>
+                    {% if object == request.user %}
+                        <a href="{% url 'profiles:edit' object.username %}" style="color: darkseagreen"><u>Edit profile</u></a>
+                    {% endif %}
+                </small>
+            </div>
+
         </div>
-        <div class="col-lg-9 col-12">
+        <div class="col-lg-6 col-12">
             <h1>Tweets</h1>
-            <div id="tweet-container" data-url="/api/profiles/{{ object.username }}/tweet/" class="text-center">
+            <div id="tweet-container" data-url="/api/profiles/{{ object.username }}/tweet/">
 
             </div>
             <a href="#" id="loadMore">Load more Tweets</a>
