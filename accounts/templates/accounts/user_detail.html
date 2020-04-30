@@ -36,7 +36,7 @@
             <p>{{ object.followed_by.all.count }}{% if object.followed_by.all.count == 1 %} Follower{% else %} Followers{% endif %}</p>
             <p>
                 {% if object != request.user %}
-                    <a class="btn btn-link" href="{% url 'profiles:follow' username=object.username %}">
+                    <a href="{% url 'profiles:follow' username=object.username %}">
                         {% if following %}Unfollow{% else %}Follow{% endif %}
                     </a>
                 {% endif %}

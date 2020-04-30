@@ -65,7 +65,7 @@ class Tweet(models.Model):
     objects = TweetManager()
 
     def __str__(self):
-        return str(self.content)
+        return str(self.pk)
 
     def get_absolute_url(self):
         return reverse_lazy('tweet:detail', kwargs={'pk': self.pk})

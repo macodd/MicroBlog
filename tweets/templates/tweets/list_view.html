@@ -32,9 +32,7 @@
         </div>
         <div class="col-lg-6 col-12">
             {% if not request.GET.q %}
-                <div class="">
-                    {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Tweet' %}
-                </div>
+                {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Tweet' %}
                 <hr/>
             {% endif %}
             <div id="tweet-container" data-url="/api/tweet/">

@@ -8,7 +8,7 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6 col-12">
             <form method="post">{% csrf_token %}
-            <p>Are you sure you want to delete the tweet "{{ object }}"?</p>
+                <p><b>Are you sure you want to delete the tweet</b> "{{ object.content }}"?</p>
             <button class="btn btn-danger" type="submit">Confirm</button>
             </form>
         </div>

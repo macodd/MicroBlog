@@ -9,45 +9,23 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
     <title> {% block title %}TweetMe.co{% endblock %}</title>
 
-    <style>
-        #user-container{
-            word-break: break-all;
-        }
-        .red-color {
-            color: red;
-        }
-        .grey-color {
-            color: #c6c8ca;
-        }
-        .media-focus {
-            background-color: lightyellow;
-        }
-        textarea {
-            resize: none;
-            max-width: 500px;
-            max-height: 100px;
-        }
-        img {
-            border-radius: 15%;
-        }
-        .avatar {
-            vertical-align: middle;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-        }
-    </style>
 </head>
 <body>
+    {% load static %}
     {% include 'navbar.html' %}
 
     <div class="container my-4">
-        <div id="customAlertContainer"></div>
-        {% block content %}
+        <div class="card" id="card-body">
+            <div id="customAlertContainer"></div>
+            {% block content %}
 
-        {% endblock %}
+            {% endblock %}
+        </div>
     </div>
 
 <!-- Optional JavaScript -->
@@ -171,9 +149,9 @@
                 tweet = tweetValue.content + '<br/>' +
                     ' - via <a href="' + tweetValue.user.url + '">' +
                     tweetValue.user.username + '</a> | ' +
-                    tweetValue.date_display + '<br/><a href="/tweet/' + tweetId + '/">View</a> | ' +
-                    '<a id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Retweet</a> | ' +
-                    '<a href="#" id="tweetLiked" data-id="' + tweetId + '">' +
+                    tweetValue.date_display + '<br/><a class="mediaLink" href="/tweet/' + tweetId + '/">View</a> | ' +
+                    '<a class="mediaLink" id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Retweet</a> | ' +
+                    '<a class="mediaLink" href="#" id="tweetLiked" data-id="' + tweetId + '">' +
                     verb + '(' + tweetValue.likes +') </a>';
 
                 container = openingContainerDiv + tweetImage +
