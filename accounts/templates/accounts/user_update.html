@@ -21,11 +21,11 @@
         <div class="col-lg-3"></div>
     </div>
 
-    <div class="row text-center">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6 col-12">
-            <form class="form mt-3" method="POST" action="." enctype="multipart/form-data">
-                {% csrf_token %}
+    <form class="form mt-3" method="POST" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row text-center">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 col-12">
                 <div class="form-group">
                     <label for="firstName">{{ form.first_name.label }}</label>
                     {{ form.first_name }}
@@ -43,13 +43,21 @@
                     <img src="{{ user_img.url }}" class="align-self-center mr-3" style="height: 64px; width: 64px" alt="null">
                     {{ form.image }}
                 </div>
-                <div class="mt-4">
-                    <a class="btn-link" href="{% url 'profiles:detail' request.user.username %}">No, go back</a>
-                    <button class="ml-5 btn btn-warning" type="submit">Update</button>
+                <div class="form-group">
+                    <a href="{% url 'password_change' %}">Change password</a>
                 </div>
-            </form>
+            </div>
+            <div class="col-lg-3"></div>
         </div>
-        <div class="col-lg-3"></div>
-    </div>
+        <div class="row text-center my-5">
+            <div class="col-lg-6">
+                <a href="{% url 'profiles:detail' request.user.username %}">No, go back</a>
+            </div>
+            <div class="col-lg-6">
+                <button class="btn btn-warning" type="submit">Update</button>
+            </div>
+        </div>
+    </form>
+
 
 {% endblock %}

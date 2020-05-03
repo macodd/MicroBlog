@@ -11,6 +11,26 @@ from .models import UserProfile
 User = get_user_model()
 
 
+class FollowingView(LoginRequiredMixin, DetailView):
+    template_name   = 'accounts/following.html'
+    slug_url_kwarg  = 'username'
+    slug_field      = 'username'
+    model           = User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        following = UserProfile.objects.is_following(self.request.user, self.get_object())
+        context['following'] = following
+        return context
+
+
+class FollowerView(LoginRequiredMixin, DetailView):
+    template_name   = 'accounts/followers.html'
+    slug_url_kwarg  = 'username'
+    slug_field      = 'username'
+    model           = User
+
+
 class UserRegisterView(FormView):
     form_class = UserRegisterForm
     template_name = 'accounts/user_register.html'
@@ -65,6 +85,11 @@ def user_update_view(request, *args, **kwargs):
         'user_img': user.image,
         'form': form
     }
-    if form.is_valid():
+    try:
+        if form.is_valid():
+            return redirect('profiles:detail', username=username)
+    except OSError:
+        return redirect('profiles:detail', username=username)
+    except AttributeError:
         return redirect('profiles:detail', username=username)
     return render(request, template, context)

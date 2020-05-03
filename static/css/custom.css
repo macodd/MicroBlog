@@ -36,7 +36,7 @@ a {
     color: #00909e;
 }
 body {
-    background-image: url("/static/images/bg_3_wallpaper.jpg");
+    background-color: #27496d;
 }
 #card-body {
     padding: 10px;
@@ -44,4 +44,13 @@ body {
 .card-img {
     height: 100%;
     width: 100%;
+}
+.btn-link {
+    color: black;
+}
+.banner {
+    border-radius: 1%;
+    max-height: 20%;
+    max-width: 100%;
+    object-fit: cover;
 }

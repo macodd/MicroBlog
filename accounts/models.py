@@ -26,6 +26,15 @@ def upload_image_path(instance, filename):
 class UserProfileManager(models.Manager):
     use_for_related_fields = True
 
+    def random(self):
+        qs = self.get_queryset().all()
+        try:
+            if self.instance:
+                qs = qs.exclude(user=self.instance)
+        except:
+            pass
+        return qs.order_by("?")
+
     def all(self):
         qs = self.get_queryset().all()
         try:

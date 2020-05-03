@@ -42,19 +42,23 @@
                 {% endif %}
             </p>
 
-            <h3>Following <small>{{ object.profile.get_following.count }}</small></h3>
-            {% for user in object.profile.get_following %}
-                <img src="{{ user.profile.image.url }}" class="avatar" alt="null"/>
-                <a href="/profiles/{{ user.username }}">{{ user.username }}</a><br/>
+            <a class="btn-link" href="{% url 'profiles:following' object.username %}">
+                <h3>Following <small>{{ object.profile.get_following.count }}</small></h3></a>
+            {% for user in object.profile.get_following|slice:":4" %}
+                <a href="/profiles/{{ user.username }}">
+                    <img src="{{ user.profile.image.url }}" class="avatar" alt="null"/>
+                </a>
             {% empty %}
                 <h6>Not following anyone.</h6>
             {% endfor %}
 
             <hr/>
-            <h3>Followed By</h3>
-            {% for profile in object.followed_by.all %}
-                <img src="{{ profile.image.url }}" class="avatar" alt="null"/>
-                <a href="/profiles/{{ profile.user.username }}">{{ profile.user.username }}</a><br/>
+            <a class="btn-link" href="{% url 'profiles:followers' object.username %}">
+                <h3>Followed by</h3></a>
+            {% for profile in object.followed_by.random|slice:":4" %}
+                <a href="/profiles/{{ profile.user.username }}">
+                    <img src="{{ profile.image.url }}" class="avatar" alt="null"/>
+                </a>
             {% empty %}
                 <h6>Not followed by anyone.</h6>
             {% endfor %}

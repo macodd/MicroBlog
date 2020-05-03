@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-3 col-12" id="user-container" data-url="/api/profiles/{{ object.username }}">
+            <img src="{{ object.profile.image.url }}" class="mr-3 mb-3" alt="{{ object.username }}" style="max-height: 200px; max-width: 200px">
+            <h1>{{ object.username }}</h1>
+            <p>{{ object.first_name }} {{ object.last_name }}</p>
+
+        </div>
+        <div class="col-lg-6 col-12">
+            <h1>Following <small>{{ object.profile.get_following.count }}</small></h1>
+            <br/>
+            {% for user in object.profile.get_following %}
+                <div class="media">
+                    <img src="{{ user.profile.image.url }}" class="mr-3" alt="null" style="height: 48px; width: 48px">
+                    <div class="media-body">
+                        <a href="/profiles/{{ user.username }}">@{{ user.username }}</a><br/>
+                        {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                </div>
+                <hr/>
+            {% empty %}
+                <h6>Not following anyone.</h6>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}
