@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
-    <title> {% block title %}TweetMe.co{% endblock %}</title>
+    <title> {% block title %}Deno{% endblock %}</title>
 
 </head>
 <body>
@@ -20,7 +20,7 @@
     {% include 'navbar.html' %}
 
     <div class="container my-4">
-        <div class="card" id="card-body">
+        <div class="card" id="card-container-body">
             <div id="customAlertContainer"></div>
             {% block content %}
 
@@ -51,7 +51,7 @@
             function showAlert(message){
                 var position = $('#customAlertContainer')
                 var alertContent = '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
-                    '<strong>' + message + '!</strong> You should check in on some of those fields below.' +
+                    '<strong>' + message + '!</strong> Un error ocurrio,' +
                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                     '<span aria-hidden="true">&times;</span>' +
                     '</button></div>'
@@ -101,14 +101,14 @@
 
             function updateHashLinks() {
                 $('.media-body').each(function (data) {
-                    const hashTagRegex = /(^|\s)#([\w\d-]+)/g;
-                    const userNameRegex = /(^|\s)@([\w\d-]+)/g;
-                    let newText;
+                    var hashTagRegex = /\B#(\w+)(?!.,;)/g;
+                    var userNameRegex = /\B@(\w+)(?!.,;)/g;
+                    var newText;
 
-                    newText = $(this).html().replace(hashTagRegex, "$1<a href='/tags/$2/'>#$2</a>");
+                    newText = $(this).html().replace(hashTagRegex, "<a href='/tags/$1/'>#$1</a>");
                     $(this).html(newText);
 
-                    newText = $(this).html().replace(userNameRegex, "$1<a href='/profiles/$2/'>@$2</a>");
+                    newText = $(this).html().replace(userNameRegex, "<a href='/profiles/$1/'>@$1</a>");
                     $(this).html(newText);
                 })
             }
@@ -134,7 +134,7 @@
                     tweetUser = tweetValue.user.username;
                     tweetId = tweetValue.parent.id;
                     tweetValue = tweetValue.parent;
-                    preContent = '<span class="grey-color">ReTweet via @' +
+                    preContent = '<span class="grey-color">El fuego de @' +
                         tweetUser + '</span><br/>'
                 }
 
@@ -144,13 +144,14 @@
 
                 const tweetImage = '<img src="' + tweetValue.user.image +
                     '" style="height: 64px; width: 64px" class="align-self-center mr-3" ' +
-                    'alt="unavailable">';
+                    'alt="-\o/-">';
 
-                tweet = tweetValue.content + '<br/>' +
-                    ' - via <a href="' + tweetValue.user.url + '">' +
-                    tweetValue.user.username + '</a> | ' +
-                    tweetValue.date_display + '<br/><a class="mediaLink" href="/tweet/' + tweetId + '/">View</a> | ' +
-                    '<a class="mediaLink" id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Retweet</a> | ' +
+                tweet = '<a href="' + tweetValue.user.url + '"><b>' +
+                    tweetValue.user.username + '</b></a><br/>' +
+                    tweetValue.content +
+                    '<p class="text-muted mt-1">' + tweetValue.date_display + '<p/>' +
+                    '<a class="mediaLink" href="/tweet/' + tweetId + '/">Ver</a> | ' +
+                    '<a class="mediaLink" id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Quemar</a> | ' +
                     '<a class="mediaLink" href="#" id="tweetLiked" data-id="' + tweetId + '">' +
                     verb + '(' + tweetValue.likes +') </a>';
 
@@ -174,7 +175,7 @@
 
             function parseTweets() {
                 if (tweetList === 0) {
-                    tweetContainer.text("No tweets currently found.");
+                    tweetContainer.text("No hay fuegos aun.");
                 } else {
                     // tweets exists
                     $.each(tweetList, function (k, value) {
@@ -247,7 +248,7 @@
 
             const tweetForm = $('#tweet-form');
 
-            const charsStart = 140;
+            const charsStart = 320;
             let charsCurrent = 0;
 
             tweetForm.append("<span id='tweetCharsLeft'>" + charsStart + "</span>");
@@ -293,7 +294,7 @@
                         }
                     })
                 } else {
-                    var message = "Too long."
+                    const message = "Muy Largo.";
                     console.log("error", message);
                     showAlert(message);
                 }
@@ -307,4 +308,7 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <noscript>Your browser does not support javascript</noscript>
 </body>
+<footer class="text-right p-2">
+    <span style="color: white">@maca</span>
+</footer>
 </html>

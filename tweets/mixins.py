@@ -9,7 +9,7 @@ class FormUserNeededMixin(object):
             form.instance.user = self.request.user
             return super().form_valid(form)
         else:
-            form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["User must be logged in."])
+            form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["Usuario debe tener una sesion iniciada."])
             return self.form_invalid(form)
 
 
@@ -19,5 +19,5 @@ class UserOwnerMixin(object):
         if form.instance.user == self.request.user:
             return super().form_valid(form)
         else:
-            form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["User is not allowed to change content."])
+            form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["Solo el creador puede cambiar el contenido."])
         return self.form_invalid(form)

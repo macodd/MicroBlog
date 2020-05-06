@@ -12,14 +12,14 @@
 
 {% endblock %}
 
-{% block title %}Profile | {{ block.super }}{% endblock %}
+{% block title %}Perfil | {{ block.super }}{% endblock %}
 
 {% block content %}
 
     {% if messages %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {% for message in messages %}
-                <strong>Holy guacamole! </strong>{{ message|escape }}
+                <strong>Que verg! </strong>{{ message|escape }}
             {% endfor %}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -33,52 +33,52 @@
             <h1>{{ object.username }}</h1>
             <p>{{ object.first_name }} {{ object.last_name }}</p>
             <hr/>
-            <p>{{ object.followed_by.all.count }}{% if object.followed_by.all.count == 1 %} Follower{% else %} Followers{% endif %}</p>
+            <p>{{ object.followed_by.all.count }}{% if object.followed_by.all.count == 1 %} Seguidor{% else %} Seguidores{% endif %}</p>
             <p>
                 {% if object != request.user %}
                     <a href="{% url 'profiles:follow' username=object.username %}">
-                        {% if following %}Unfollow{% else %}Follow{% endif %}
+                        {% if following %}No seguir mas{% else %}Seguir{% endif %}
                     </a>
                 {% endif %}
             </p>
 
             <a class="btn-link" href="{% url 'profiles:following' object.username %}">
-                <h3>Following <small>{{ object.profile.get_following.count }}</small></h3></a>
+                <h3>Siguiendo <small>{{ object.profile.get_following.count }}</small></h3></a>
             {% for user in object.profile.get_following|slice:":4" %}
                 <a href="/profiles/{{ user.username }}">
                     <img src="{{ user.profile.image.url }}" class="avatar" alt="null"/>
                 </a>
             {% empty %}
-                <h6>Not following anyone.</h6>
+                <h6>No sigue a nadie.</h6>
             {% endfor %}
 
             <hr/>
             <a class="btn-link" href="{% url 'profiles:followers' object.username %}">
-                <h3>Followed by</h3></a>
+                <h3>Seguido por</h3></a>
             {% for profile in object.followed_by.random|slice:":4" %}
                 <a href="/profiles/{{ profile.user.username }}">
                     <img src="{{ profile.image.url }}" class="avatar" alt="null"/>
                 </a>
             {% empty %}
-                <h6>Not followed by anyone.</h6>
+                <h6>No tiene seguidores.</h6>
             {% endfor %}
             <hr/>
 
             <div class="text-center">
                 <small>
                     {% if object == request.user %}
-                        <a href="{% url 'profiles:edit' object.username %}" style="color: darkseagreen"><u>Edit profile</u></a>
+                        <a href="{% url 'profiles:edit' object.username %}" style="color: darkseagreen"><u>Editar perfil</u></a>
                     {% endif %}
                 </small>
             </div>
 
         </div>
-        <div class="col-lg-6 col-12">
-            <h1>Tweets</h1>
+        <div class="col-lg-7 col-12">
+            <h1>Actividad</h1>
             <div id="tweet-container" data-url="/api/profiles/{{ object.username }}/tweet/">
 
             </div>
-            <a href="#" id="loadMore">Load more Tweets</a>
+            <a href="#" id="loadMore">cenizas..</a>
 
         </div>
     </div>

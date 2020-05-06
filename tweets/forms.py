@@ -6,7 +6,7 @@ from .models import Tweet
 class TweetModelForm(forms.ModelForm):
     content = forms.CharField(label="",
                               widget=forms.Textarea(
-                                  attrs={'placeholder': 'Your message',
+                                  attrs={'placeholder': 'Que fuego deseas iniciar?',
                                          'class': 'form-control'}))
 
     class Meta:
@@ -17,6 +17,6 @@ class TweetModelForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
-        if len(content) > 140:
-            raise forms.ValidationError("Too long")
+        if len(content) > 320:
+            raise forms.ValidationError("Muy largo")
         return content

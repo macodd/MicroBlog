@@ -12,13 +12,13 @@
 
 {% endblock %}
 
-{% block title %}Tweets | {{ block.super }}{% endblock %}
+{% block title %}Fuego | {{ block.super }}{% endblock %}
 
 {% block content %}
     {% if messages %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {% for message in messages %}
-                <strong>Holy guacamole! </strong>{{ message|escape }}
+                <strong>Que verg! </strong>{{ message|escape }}
             {% endfor %}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -30,15 +30,15 @@
         <div class="col-lg-3 col-12 my-4">
             <h2>{{ request.user }}</h2>
         </div>
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-7 col-12">
             {% if not request.GET.q %}
-                {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Tweet' %}
+                {% include 'tweets/form.html' with form_id='tweet-form' form=create_form action_url=create_url btn_title='Leña' %}
                 <hr/>
             {% endif %}
             <div id="tweet-container" data-url="/api/tweet/">
 
             </div>
-            <a href="#" id="loadMore">Load more Tweets</a>
+            <a href="#" id="loadMore">cenizas..</a>
             <br/>
         </div>
     </div>

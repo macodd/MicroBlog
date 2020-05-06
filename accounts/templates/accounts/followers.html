@@ -10,7 +10,7 @@
 
         </div>
         <div class="col-lg-6 col-12">
-            <h1>Followers <small>{{ object.followed_by.all.count }}</small></h1>
+            <h1>Seguidores <small>{{ object.followed_by.all.count }}</small></h1>
             <br/>
             {% for profile in object.followed_by.all %}
                 <div class="media">
@@ -22,7 +22,7 @@
                 </div>
                 <hr/>
             {% empty %}
-                <h6>Not followed by anyone.</h6>
+                <h6>No tiene seguidores.</h6>
             {% endfor %}
 
         </div>

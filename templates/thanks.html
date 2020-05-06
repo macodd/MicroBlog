@@ -1,0 +1,23 @@
+{% extends 'home_base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+    <div class="card text-center">
+        <div class="card-header">
+            logo
+        </div>
+        <div class="card-body">
+            <h1 class="card-title">Listo!</h1>
+            <hr/>
+            <p class="card-text">Gracias por registrase. Inicie session y descubra el fuego al que le estan metiendo leña!</p>
+            <a class="card-text" href="{% url 'login' %}">Ir a la pagina de inicio</a>
+        </div>
+        <div class="card-footer text-muted">
+            @maca
+        </div>
+    </div>
+
+{% endblock %}

@@ -58,7 +58,7 @@ class Tweet(models.Model):
     liked       = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                          blank=True,
                                          related_name='liked')
-    content     = models.CharField(max_length=140)
+    content     = models.CharField(max_length=320)
     timestamp   = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)
 

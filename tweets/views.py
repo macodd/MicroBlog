@@ -48,7 +48,7 @@ class TweetDeleteView(LoginRequiredMixin, DeleteView):
             self.object.delete()
             return redirect(success_url)
         else:
-            messages.add_message(request, messages.ERROR, "Not allowed to delete someone's else tweet")
+            messages.add_message(request, messages.ERROR, "No puedes borrar el contenido de los demas")
             return redirect('home')
 
 

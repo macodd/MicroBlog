@@ -76,7 +76,7 @@ class UserFollowView(LoginRequiredMixin, View):
 def user_update_view(request, *args, **kwargs):
     username = kwargs.get('username')
     if request.user.username != username:
-        messages.add_message(request, messages.ERROR, 'Unauthorized')
+        messages.add_message(request, messages.ERROR, 'No tiene permitido acceso')
         return redirect('profiles:detail', username=request.user.username)
     template = 'accounts/user_update.html'
     user = UserProfile.objects.get(user__username=username)

@@ -25,7 +25,7 @@ from hashtags.api.views import HashTagAPIView
 
 from accounts.views import UserRegisterView
 
-from .views import SearchView
+from .views import SearchView, ThanksForRegistering
 
 
 urlpatterns = [
@@ -34,6 +34,7 @@ urlpatterns = [
     path('search/', SearchView.as_view(), name='search'),
     path('', include('django.contrib.auth.urls')),
     path('register/', UserRegisterView.as_view(), name='register'),
+    path('register/done/', ThanksForRegistering.as_view(), name='register-done'),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
     path('api/search/',SearchAPIView.as_view(), name='search-api'),

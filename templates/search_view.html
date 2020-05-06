@@ -12,32 +12,32 @@
 
 {% endblock %}
 
-{% block title %}Tweets | {{ block.super }}{% endblock %}
+{% block title %}Leñas | {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="row" id="row1">
         <div class="col-sm-12">
             {% if request.GET.q %}
-            <p class="lead">Results for: {{ request.GET.q }}</p>
+            <p class="lead">Resultados: {{ request.GET.q }}</p>
             <hr/>
             {% endif %}
         </div>
         <div class="col-lg-9 col-12">
-            <h1>Tweets</h1>
+            <h1>Leñas</h1>
             <hr/>
             <div id="tweet-container" data-url="/api/search/" class="text-center">
 
             </div>
-            <a href="#" id="loadMore">Load more Tweets</a>
+            <a href="#" id="loadMore">cenizas..</a>
         </div>
         <div class="col-lg-3 col-12">
-            <h1>Users</h1>
+            <h1>Usuarios</h1>
             <hr/>
             {% for user in users %}
                 <img src="{{ user.profile.image.url }}" class="avatar mr-2" alt="null"/>
                 <a href="/profiles/{{ user.username }}/">{{ user.username }}</a><br/>
             {% empty %}
-                <p>No users found</p>
+                <p>No se encontro ningun usuario</p>
             {% endfor %}
         </div>
     </div>

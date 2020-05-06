@@ -16,50 +16,67 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-{% block title %}Register | {{ block.super }}{% endblock %}
+{% block title %}Registrarse | {{ block.super }}{% endblock %}
 
 {% block content %}
 
     <div class="card mb-3 text-center">
+        <div class="card-header">
+            Logo
+        </div>
         <img class="card-img-top banner" src="{% static 'images/banner.jpg' %}" alt="Card image cap">
         <div class="card-body">
-            <h1 class="card-title">Welcome!</h1>
+            <h1 class="card-title">Bienvenido!</h1>
+            <small>Deno esta aqui para que encuentres personas
+            con las cuales puedas conectarte para estar
+            al dia con los acontecimientos que estan
+            sucediendo en su entorno.<br/>
+                Metale leña al fuego!</small>
             <hr/>
             <form method="POST" class="form" action=".">
                 {% csrf_token %}
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{ form.username.label }}</label>
+                    <label class="col-sm-3 col-form-label">{{ form.username.label }}</label>
                     <div class="col-sm-8">
                         {{ form.username }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{ form.first_name.label }}</label>
+                    <label class="col-sm-3 col-form-label">{{ form.first_name.label }}</label>
                     <div class="col-sm-8">
                         {{ form.first_name }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{ form.last_name.label }}</label>
+                    <label class="col-sm-3 col-form-label">{{ form.last_name.label }}</label>
                     <div class="col-sm-8">
                         {{ form.last_name }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{ form.email.label }}</label>
+                    <label class="col-sm-3 col-form-label">{{ form.email.label }}</label>
                     <div class="col-sm-8">
                         {{ form.email }}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">{{ form.accept_terms.label }}</label>
+                    <div class="col-sm-8 text-sm-left mt-1">
+                        {{ form.accept_terms }}
+                    </div>
+                </div>
                 <br/>
-                <button class="btn btn-lg btn-primary" type="submit">Register</button>
+                <button class="btn btn-lg btn-primary" type="submit">Registrarse</button>
 
             </form>
             <div class="row my-4">
                 <div class="col text-center">
-                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'login' %}">Iniciar Sesión</a>
                 </div>
             </div>
+        </div>
+        <div class="card-footer text-muted">
+            @maca
         </div>
     </div>
 

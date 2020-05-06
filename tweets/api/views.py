@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from  rest_framework.response import Response
@@ -29,7 +28,7 @@ class RetweetAPIView(APIView):
             if new_tweet is not None:
                 data = TweetModelSerializer(new_tweet).data
                 return Response(data)
-        return Response({'message': 'Not Allowed'}, status=400)
+        return Response({'message': 'No esta Autorizado'}, status=400)
 
 
 class TweetDetailView(RetrieveAPIView):

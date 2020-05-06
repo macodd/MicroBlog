@@ -36,9 +36,9 @@ a {
     color: #00909e;
 }
 body {
-    background-color: #27496d;
+    background: url("/static/images/background.jpg");
 }
-#card-body {
+#card-container-body {
     padding: 10px;
 }
 .card-img {
@@ -49,8 +49,9 @@ body {
     color: black;
 }
 .banner {
-    border-radius: 1%;
+    border-radius: 0;
     max-height: 20%;
     max-width: 100%;
     object-fit: cover;
+    padding: 3%;
 }

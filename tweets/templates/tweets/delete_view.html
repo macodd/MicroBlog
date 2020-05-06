@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete tweet | {{ block.super }}{% endblock %}
+{% block title %}Borrar | {{ block.super }}{% endblock %}
 
 {% block content %}
 
     <div class="row">
         <div class="col-lg-3"></div>
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-7 col-12">
             <form method="post">{% csrf_token %}
-                <p><b>Are you sure you want to delete the tweet</b> "{{ object.content }}"?</p>
-            <button class="btn btn-danger" type="submit">Confirm</button>
+                <p>Esta seguro que desea borrar <b>"{{ object.content }}"?</b></p>
+            <button class="btn btn-danger" type="submit">Confirmar</button>
             </form>
         </div>
     </div>
