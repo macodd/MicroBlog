@@ -2,17 +2,18 @@
 
 {% load static %}
 
-
 {% block content %}
 
     <div class="card text-center">
         <div class="card-header">
-            logo
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
+            </a>
         </div>
         <div class="card-body">
             <h1 class="card-title">Listo!</h1>
             <hr/>
-            <p class="card-text">Gracias por registrase. Inicie session y descubra el fuego al que le estan metiendo leña!</p>
+            <p class="card-text">Gracias por registrase. Inicie session y cominece a meterle leña al fuego!</p>
             <a class="card-text" href="{% url 'login' %}">Ir a la pagina de inicio</a>
         </div>
         <div class="card-footer text-muted">

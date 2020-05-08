@@ -12,7 +12,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
-    <title> {% block title %}Deno{% endblock %}</title>
+    <title> {% block title %}Fogata{% endblock %}</title>
 
 </head>
 <body>
@@ -130,12 +130,14 @@
                     }, 2000)
                 }
 
+                console.log(tweetValue.date_display)
+
                 if (tweetValue.parent){
                     tweetUser = tweetValue.user.username;
                     tweetId = tweetValue.parent.id;
                     tweetValue = tweetValue.parent;
-                    preContent = '<span class="grey-color">El fuego de @' +
-                        tweetUser + '</span><br/>'
+                    preContent = '<span class="grey-color">@' +
+                        tweetUser + ' le metio leña</span><br/>'
                 }
 
                 let verb = 'Like';
@@ -309,6 +311,8 @@
 <noscript>Your browser does not support javascript</noscript>
 </body>
 <footer class="text-right p-2">
-    <span style="color: white">@maca</span>
+    <a href="{% url 'terms' %}" id="btn-footer-link">Terminos</a><br/>
+    <a href="{% url 'contact' %}" id="btn-footer-link">Contactenos</a><br/>
+    <span>@maca</span>
 </footer>
 </html>

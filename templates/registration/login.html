@@ -15,16 +15,18 @@ $(document).ready(function () {
 
     <div class="card mb-3 mx-5 text-center">
         <div class="card-header">
-            logo
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
+            </a>
         </div>
         <div class="row no-gutters">
             <div class="card-body">
-                <h2 class="card-title">Inicio</h2>
+                <h2 class="card-title">La Fogata</h2>
                 <hr/>
                 {% if form.errors %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {% for error in form.non_field_errors %}
-                            <strong>Algo sucedio! </strong>{{ error|escape }}
+                            <li>{{ error|escape }}</li>
                         {% endfor %}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -63,7 +65,7 @@ $(document).ready(function () {
             </div>
         </div>
         <div class="card-footer">
-            @maca
+            <a href="{% url 'terms' %}">Terminos</a> | <a href="{% url 'contact' %}">Contactenos</a><br/>@maca
         </div>
     </div>
 

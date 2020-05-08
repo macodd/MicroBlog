@@ -23,9 +23,14 @@ from tweets.api.views import SearchAPIView
 from hashtags.views import HashTagView
 from hashtags.api.views import HashTagAPIView
 
-from accounts.views import UserRegisterView
 
-from .views import SearchView, ThanksForRegistering
+from .views import (
+    SearchView,
+    ThanksForRegistering,
+    TermsView,
+    ContactFormView,
+    RegisterView
+)
 
 
 urlpatterns = [
@@ -33,7 +38,9 @@ urlpatterns = [
     path('tweet/', include('tweets.urls', namespace='tweet')),
     path('search/', SearchView.as_view(), name='search'),
     path('', include('django.contrib.auth.urls')),
-    path('register/', UserRegisterView.as_view(), name='register'),
+    path('terms/', TermsView.as_view(), name='terms'),
+    path('contact/', ContactFormView.as_view(), name='contact'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('register/done/', ThanksForRegistering.as_view(), name='register-done'),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),

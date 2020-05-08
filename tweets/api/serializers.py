@@ -1,11 +1,9 @@
-import locale
 from rest_framework import serializers
 from django.utils.timesince import timesince
+from datetime import datetime
 
 from tweets.models import Tweet
 from accounts.api.serializers import UserDisplaySerializer
-
-locale.setlocale(locale.LC_TIME, 'es')
 
 
 class ParentTweetModelSerializer(serializers.ModelSerializer):
@@ -36,10 +34,12 @@ class ParentTweetModelSerializer(serializers.ModelSerializer):
         return obj.liked.all().count()
 
     def get_date_display(self, obj):
-        if obj.timestamp.hour < 5:
-            if obj.timestamp.hour == 0:
+        if obj.timestamp.day == datetime.now().day:
+            curr = datetime.now().hour - obj.timestamp.hour
+            if curr < 5:
+                if curr == 0:
+                    return "hace " + timesince(obj.timestamp)
                 return "hace " + timesince(obj.timestamp)
-            return "hace " + timesince(obj.timestamp)
         return obj.timestamp.strftime("%d %B, %Y")
 
 
@@ -73,8 +73,10 @@ class TweetModelSerializer(serializers.ModelSerializer):
         return obj.liked.all().count()
 
     def get_date_display(self, obj):
-        if obj.timestamp.hour < 5:
-            if obj.timestamp.hour == 0:
+        if obj.timestamp.day == datetime.now().day:
+            curr = datetime.now().hour - obj.timestamp.hour
+            if curr < 5:
+                if curr == 0:
+                    return "hace " + timesince(obj.timestamp)
                 return "hace " + timesince(obj.timestamp)
-            return "hace " + timesince(obj.timestamp)
         return obj.timestamp.strftime("%d %B, %Y")

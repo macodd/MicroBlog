@@ -1,26 +1,9 @@
-import os
 from django.db import models
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 
-from PIL import Image as Img
-from PIL import ExifTags
-from io import BytesIO
-from django.core.files import File
-
-
-def get_filename_ext(filepath):
-    basename = os.path.basename(filepath)
-    name, ext = os.path.splitext(basename)
-    return name, ext
-
-
-def upload_image_path(instance, filename):
-    new_filename = instance.user.username
-    name, ext = get_filename_ext(filename)
-    final_filename = f'{new_filename}{ext}'
-    return f'images/{new_filename}/{final_filename}'
+from .utils import rotate_image, upload_image_path
 
 
 class UserProfileManager(models.Manager):
@@ -85,31 +68,13 @@ class UserProfile(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image:
-            pil_image = Img.open(BytesIO(self.image.read()))
-            for orientation in ExifTags.TAGS.keys():
-                if ExifTags.TAGS[orientation] == 'Orientation':
-                    break
-            exif = dict(pil_image._getexif().items())
-
-            if exif[orientation] == 3:
-                pil_image = pil_image.rotate(180, expand=True)
-            elif exif[orientation] == 6:
-                pil_image = pil_image.rotate(270, expand=True)
-            elif exif[orientation] == 8:
-                pil_image = pil_image.rotate(90, expand=True)
-
-            output = BytesIO()
-            pil_image.save(output, format='JPEG', quality=75)
-            output.seek(0)
-            self.image = File(output, self.image.name)
-
+            rotate_image(self)
         return super().save(*args, **kwargs)
 
 
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(user=instance)
-        # celery + redis
 
 
 post_save.connect(post_save_user_receiver, sender=settings.AUTH_USER_MODEL)

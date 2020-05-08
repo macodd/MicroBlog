@@ -5,10 +5,12 @@
 {% block script %}
     <script>
         $(document).ready(function () {
-            $("#id_username").addClass("form-control");
             $("#id_first_name").addClass("form-control");
             $("#id_last_name").addClass("form-control");
             $("#id_email").addClass("form-control");
+            $("#id_username").addClass("form-control");
+            $("#id_password").addClass("form-control");
+            $("#id_password2").addClass("form-control");
         })
     </script>
 {% endblock %}
@@ -22,25 +24,41 @@
 
     <div class="card mb-3 text-center">
         <div class="card-header">
-            Logo
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
+            </a>
         </div>
         <img class="card-img-top banner" src="{% static 'images/banner.jpg' %}" alt="Card image cap">
         <div class="card-body">
             <h1 class="card-title">Bienvenido!</h1>
-            <small>Deno esta aqui para que encuentres personas
+            <small>La Fogata esta aqui para que encuentres personas
             con las cuales puedas conectarte para estar
             al dia con los acontecimientos que estan
             sucediendo en su entorno.<br/>
                 Metale leña al fuego!</small>
             <hr/>
-            <form method="POST" class="form" action=".">
-                {% csrf_token %}
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">{{ form.username.label }}</label>
-                    <div class="col-sm-8">
-                        {{ form.username }}
+
+            {% if form.errors %}
+                <div class="row justify-content-md-center">
+                    <div class="alert alert-danger alert-dismissible fade show col-6" role="alert">
+                        {% for error in form.username.errors %}
+                            <li>{{ error|escape }}</li>
+                        {% endfor %}
+                        {% for error in form.password.errors %}
+                            <li>{{ error|escape }}</li>
+                        {% endfor %}
+                        {% for error in form.password2.errors %}
+                            <li>{{ error|escape }}</li>
+                        {% endfor %}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
+            {% endif %}
+
+            <form method="POST" class="form">
+                {% csrf_token %}
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">{{ form.first_name.label }}</label>
                     <div class="col-sm-8">
@@ -60,9 +78,28 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">{{ form.username.label }}</label>
+                    <div class="col-sm-8">
+                        {{ form.username }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">{{ form.password.label }}</label>
+                    <div class="col-sm-8">
+                        {{ form.password }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">{{ form.password2.label }}</label>
+                    <div class="col-sm-8">
+                        {{ form.password2 }}
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 col-form-label">{{ form.accept_terms.label }}</label>
                     <div class="col-sm-8 text-sm-left mt-1">
-                        {{ form.accept_terms }}
+                        {{ form.accept_terms }} <small>Al registrarse esta accediendo a los
+                        <a href="{% url 'terms' %}">terminos y condiciones</a> de uso</small>
                     </div>
                 </div>
                 <br/>
@@ -76,7 +113,7 @@
             </div>
         </div>
         <div class="card-footer text-muted">
-            @maca
+            <a href="{% url 'terms' %}">Terminos</a> | <a href="{% url 'contact' %}">Contactenos</a><br/>@maca
         </div>
     </div>
 

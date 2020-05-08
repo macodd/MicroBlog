@@ -1,38 +1,6 @@
-from django.contrib.auth import get_user_model
 from django import forms
 
 from .models import UserProfile
-
-User = get_user_model()
-
-
-class UserRegisterForm(forms.Form):
-    username        = forms.CharField(max_length=140, label='Nombre de Usuario')
-    first_name      = forms.CharField(max_length=140, label='Nombre(s)')
-    last_name       = forms.CharField(max_length=140, label='Apellido(s)')
-    email           = forms.EmailField()
-    accept_terms    = forms.BooleanField()
-    password        = forms.CharField(widget=forms.PasswordInput)
-    password2       = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
-
-    def clean_password2(self):
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-        if password != password2:
-            raise forms.ValidationError("Contraseñas deben coincidir")
-        return password2
-
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if User.objects.filter(username__iexact=username).exists():
-            raise forms.ValidationError('Nombre de usuario ya existe')
-        return username
-
-    def clean_accept_terms(self):
-        accepted = self.cleaned_data.get('accept_terms')
-        if not accepted:
-            raise forms.ValidationError('Para registrarse debe acceder a los terminos y condiciones')
-        return accepted
 
 
 class UserUpdateForm(forms.Form):

@@ -1,0 +1,48 @@
+{% extends 'home_base.html' %}
+
+{% block head_title %}Términos | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header text-center">
+            logo
+        </div>
+        <div class="card-body container col-lg-6">
+            <h1 class="text-center">Terminos y Condiciones de Uso</h1>
+            <hr/>
+            <p>Puede usar nuestra plataforma para expresar sus ideas sin censura al menos que sean en forma de ataque
+            personal contra otro usuario.</p>
+            <p>Nos reservamos el derecho de eliminar a cualquier usuario que utilize los siguientes topicos como
+                ataque personal y/o prejuicio:</p>
+            <ul>
+                <li>Racismo</li>
+                <li>Sexismo</li>
+                <li>Nacionalidad</li>
+                <li>Clase social</li>
+            </ul>
+            <p>Mas cualquier otro modo de prejuicio que los moderadores decraten como una ofensa intelectual.</p>
+            <p>Nos dedicamos a proveer una plataforma en la cual todo usuario es libre de expresarse de la forma que
+            desee.</p>
+
+            <h1>Privacidad</h1>
+            <hr/>
+            <p>No vamos a vender o "compartir" su informacion sin su autorizacion.</p>
+            <p>Cada usuario es considerado un "autor", y solo las publicaciones hechas por
+                el mismo son tratadas de forma publica.</p>
+            <p>No nos responsabilizamos por otros usuarios, solo en situaciones en las que algun usuario quebrante
+            una de las reglas previamente establecidas.</p>
+            <hr/>
+
+            <h3>Gracias y disfrute de nuestros servicios</h3>
+
+            {% if previous_url %}
+                <a class="my-3" href={{ previous_url }}>Regresar</a><br/>
+            {% endif %}
+            <a href="{% url 'home' %}">Inicio</a>
+
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'contact' %}">Contactenos</a><br/>@maca
+        </div>
+    </div>
+{% endblock %}

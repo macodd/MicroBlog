@@ -55,3 +55,9 @@ body {
     object-fit: cover;
     padding: 3%;
 }
+#btn-footer-link {
+    color: white;
+}
+footer {
+    color: white;
+}
