@@ -78,7 +78,7 @@ def tweet_save_receiver(sender, instance, created, **kwargs):
     if created and not instance.parent:
         user_regex = r'@(?P<username>[\w.@+-]+)'
         usernames = re.findall(user_regex, instance.content)
-        # notifications app
+        # notification
 
         hashtag_regex = r'#(?P<hashtag>[\w\d+-]+)'
         hashtags = re.findall(hashtag_regex, instance.content)

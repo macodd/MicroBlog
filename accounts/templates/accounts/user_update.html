@@ -5,6 +5,7 @@
         $('#id_first_name').addClass('form-control');
         $('#id_last_name').addClass('form-control');
         $('#id_email').addClass('form-control');
+        $('#id_delete').addClass('form-control');
     </script>
 {% endblock %}
 
@@ -44,7 +45,14 @@
                     {{ form.image }}
                 </div>
                 <div class="form-group">
-                    <a href="{% url 'password_change' %}">Cambiar la Contraseña</a>
+                    <a href="{% url 'register:password_change' %}">Cambiar la Contraseña</a>
+                </div>
+                <div class="form-group">
+                    <h1>Eliminar</h1>
+                    <hr/>
+                    <label for="deleteBox">{{ form.delete.label }}</label><br/>
+                    {{ form.delete }}
+                    <small>si desea eliminar su cuenta escriba 'borrar'?</small>
                 </div>
             </div>
             <div class="col-lg-3"></div>

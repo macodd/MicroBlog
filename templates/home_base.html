@@ -12,6 +12,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
+    <!-- Website favicon -->
+    <link rel="icon" type="image/png" href='{% static "favicon/favicon-16x16.png" %}' sizes="16x16" />
+
     <style>
         #parent {
             padding: 4% 1%;
@@ -36,7 +39,7 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     {% block script %}{% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <noscript>Su navegador no soporta Javascript!</noscript>
 </body>

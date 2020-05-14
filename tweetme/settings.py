@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'tweets.apps.TweetsConfig',
     'accounts.apps.AccountsConfig',
     'hashtags.apps.HashtagsConfig',
+    'register.apps.RegisterConfig',
 ]
 
 MIDDLEWARE = [

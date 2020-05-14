@@ -11,10 +11,11 @@ class UserUpdateForm(forms.Form):
         self.fields['last_name'].widget.attrs['placeholder'] = self.request.user.last_name
         self.fields['email'].widget.attrs['placeholder'] = self.request.user.email
 
-    first_name  = forms.CharField(max_length=40, required=False)
-    last_name   = forms.CharField(max_length=40, required=False)
-    image       = forms.ImageField(allow_empty_file=True, required=False)
+    first_name  = forms.CharField(label='Nombre', max_length=40, required=False)
+    last_name   = forms.CharField(label='Apellido', max_length=40, required=False)
+    image       = forms.ImageField(label='Imagen', allow_empty_file=True, required=False)
     email       = forms.EmailField(required=False)
+    delete     = forms.CharField(label='Eliminar cuenta?', max_length=7, required=False)
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -27,6 +28,7 @@ class UserUpdateForm(forms.Form):
         l_name  = data.get('last_name')
         img     = data.get('image')
         email = data.get('email')
+        delete = data.get('delete').lower()
         u = self.request.user
         user_prof = UserProfile.objects.get(user__username=u)
         if f_name != '':
@@ -37,6 +39,8 @@ class UserUpdateForm(forms.Form):
             user_prof.user.email = email
         if img is not None:
             user_prof.image = img
+        if delete == 'borrar':
+            user_prof.user.active = False
 
         user_prof.save()
 

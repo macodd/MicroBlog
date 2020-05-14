@@ -25,23 +25,23 @@ from hashtags.api.views import HashTagAPIView
 
 
 from .views import (
+    UserLoginView,
+    UserLogoutView,
     SearchView,
-    ThanksForRegistering,
     TermsView,
     ContactFormView,
-    RegisterView
 )
 
 
 urlpatterns = [
     path('', TweetListView.as_view(), name='home'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout', UserLogoutView.as_view(), name='logout'),
     path('tweet/', include('tweets.urls', namespace='tweet')),
+    path('register/', include('register.urls', namespace='register')),
     path('search/', SearchView.as_view(), name='search'),
-    path('', include('django.contrib.auth.urls')),
     path('terms/', TermsView.as_view(), name='terms'),
     path('contact/', ContactFormView.as_view(), name='contact'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('register/done/', ThanksForRegistering.as_view(), name='register-done'),
     path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
     path('api/search/',SearchAPIView.as_view(), name='search-api'),

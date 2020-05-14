@@ -1,38 +1,21 @@
 from django.views.generic import View, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.shortcuts import render
 
-from .forms import ContactForm, RegisterForm
+from .forms import ContactForm
 
 User = get_user_model()
 
 
-class RegisterView(FormView):
-    form_class = RegisterForm
-    template_name = 'registration/register.html'
-    success_url = '/register/done/'
-
-    def form_valid(self, form):
-        username = form.cleaned_data.get('username')
-        first_name = form.cleaned_data.get('first_name')
-        last_name = form.cleaned_data.get('last_name')
-        email   = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password2')
-        new_user = User.objects.create(
-            username=username,
-            first_name=first_name.title(),
-            last_name=last_name.title(),
-            email=email
-        )
-        new_user.set_password(password)
-        new_user.save()
-        return super().form_valid(form)
+class UserLoginView(LoginView):
+    template_name = 'login.html'
 
 
-class ThanksForRegistering(TemplateView):
-    template_name = 'registration/register-done.html'
+class UserLogoutView(LogoutView):
+    template_name = 'login.html'
 
 
 class SearchView(LoginRequiredMixin, View):
