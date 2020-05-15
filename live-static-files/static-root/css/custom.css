@@ -1,0 +1,63 @@
+#user-container {
+    word-break: break-all;
+}
+.red-color {
+    color: red;
+}
+.grey-color {
+    color: #c6c8ca;
+}
+.media-focus {
+    background-color: lightyellow;
+}
+textarea {
+    resize: none;
+    max-width: 500px;
+    max-height: 100px;
+}
+img {
+    border-radius: 15%;
+}
+.avatar {
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+/* custom by me */
+nav {
+    background-color: #142850;
+}
+.btn-primary {
+    border-color: #00909e;
+    background-color: #00909e;
+}
+a {
+    color: #00909e;
+}
+body {
+    background: url("/static/images/background.jpg");
+}
+#card-container-body {
+    padding: 10px;
+}
+.card-img {
+    height: 100%;
+    width: 100%;
+}
+.btn-link {
+    color: black;
+}
+.banner {
+    border-radius: 0;
+    max-height: 20%;
+    max-width: 100%;
+    object-fit: cover;
+    padding: 3%;
+}
+#btn-footer-link {
+    color: white;
+}
+footer {
+    color: white;
+}
