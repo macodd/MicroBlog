@@ -25,7 +25,7 @@ SECRET_KEY = 'wl*%vh)ro8^ggf5=x@oc(nft%=7@b^g&o2n2z29w#z-ywugv59'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com']
+ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com', 'www.lafogata.biz']
 
 
 # Application definition
