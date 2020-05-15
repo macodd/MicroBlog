@@ -23,7 +23,6 @@ from tweets.api.views import SearchAPIView
 from hashtags.views import HashTagView
 from hashtags.api.views import HashTagAPIView
 
-
 from .views import (
     UserLoginView,
     UserLogoutView,

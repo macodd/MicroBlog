@@ -64,8 +64,9 @@ ROOT_URLCONF = 'tweetme.urls'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_URL
+
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = os.path.join(os.path.dirname(BASE_DIR), "sent_emails")
+# EMAIL_FILE_PATH = os.path.join(os.path.dirname(BASE_DIR), "sent_emails")
 
 TEMPLATES = [
     {

@@ -1,0 +1,12 @@
+{% extends 'emails/email_base.html' %}
+
+{% block html_main %}
+
+    <h3>Alguien esta hablando de ti!</h3>
+    <hr/>
+    <p>Averigua lo que han dicho dandole click al siguiente link: </p>
+    <a href="mysite.com/tweets/{{ tweet_id }}/">Ver</a>
+    <br/>
+    <p> - Equipo Fogata </p>
+
+{% endblock %}

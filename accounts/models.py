@@ -3,7 +3,7 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 
-from .utils import rotate_image, upload_image_path, send_mail_to_user
+from .utils import rotate_image, upload_image_path, register_confirmation_mail
 
 
 class UserProfileManager(models.Manager):
@@ -75,7 +75,10 @@ class UserProfile(models.Model):
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(user=instance)
-        send_mail_to_user(instance.email)
+        try:
+            register_confirmation_mail(instance)
+        except:
+            pass
 
 
 post_save.connect(post_save_user_receiver, sender=settings.AUTH_USER_MODEL)

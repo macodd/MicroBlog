@@ -10,6 +10,7 @@ from django.contrib.auth.views import (
 )
 
 from .forms import RegisterForm
+from .utils import change_password_confirmation_mail
 
 User = get_user_model()
 
@@ -43,6 +44,15 @@ class ThanksForRegistering(TemplateView):
 class UserChangePassword(PasswordChangeView):
     template_name = 'register/password_change_form.html'
     success_url = '/register/password-change/done/'
+
+    def form_valid(self, form):
+        user = self.request.user
+        user_obj = User.objects.get(user)
+        try:
+            change_password_confirmation_mail(user_obj.email)
+        except:
+            pass
+        return super().form_valid(form)
 
 
 class UserChangePasswordDone(PasswordChangeDoneView):

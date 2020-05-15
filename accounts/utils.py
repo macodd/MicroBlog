@@ -3,8 +3,10 @@ from PIL import Image, ExifTags
 from io import BytesIO
 import os
 
-from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model
+
+from django.core.mail import EmailMessage
+from render_block import render_block_to_string
 
 User = get_user_model()
 
@@ -46,15 +48,16 @@ def rotate_image(instance):
         pass
 
 
-def send_mail_to_user(user_email):
+def register_confirmation_mail(user):
     subject = 'Gracias por registrarse!'
     from_email = 'no-reply@fogata.com'
-    to = user_email
-    html_content =  '<h3><strong>Bienvenido!</strong></h3>' \
-                    '<p>Le damos la bienvenida a La Fogata.</p>' \
-                    '<p>Conectese con su comunidad y averigue lo que esta ocurriendo en su alrededor.</p>' \
-                    '<p>Que se escuche su voz!</p><br/>' \
-                    '<p> - La Fogata</p>'
-    msg = EmailMessage(subject, html_content, from_email, [to])
-    msg.content_subtype = "html"  # Main content is now text/html
+    to_email = user.email
+    html_content = render_block_to_string(
+        'emails/new-user.html',
+        {'first_name': user.first_name}
+    )
+    msg = EmailMessage(
+        subject, html_content, from_email, [to_email],
+    )
+    msg.content_subtype = "html"
     msg.send()

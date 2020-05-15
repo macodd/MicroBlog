@@ -1,4 +1,6 @@
 import re
+
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.db import models
 from django.urls import reverse_lazy
@@ -8,6 +10,10 @@ from django.utils.timezone import now
 from hashtags.signals import parsed_hashtags
 
 from accounts.models import UserProfile
+
+from .utils import mentioned_tweet_mail
+
+User = get_user_model()
 
 
 class TweetManager(models.Manager):
@@ -78,7 +84,15 @@ def tweet_save_receiver(sender, instance, created, **kwargs):
     if created and not instance.parent:
         user_regex = r'@(?P<username>[\w.@+-]+)'
         usernames = re.findall(user_regex, instance.content)
-        # notification
+        # notification add celery
+        for u in usernames:
+            qs = User.objects.filter(username__iexact=u)
+            if qs.exists():
+                user_obj = qs.first()
+                try:
+                    mentioned_tweet_mail(user_obj.email, instance.pk)
+                except:
+                    pass
 
         hashtag_regex = r'#(?P<hashtag>[\w\d+-]+)'
         hashtags = re.findall(hashtag_regex, instance.content)
