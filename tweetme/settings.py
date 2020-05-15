@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wl*%vh)ro8^ggf5=x@oc(nft%=7@b^g&o2n2z29w#z-ywugv59'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com']
 
 
 # Application definition
@@ -65,7 +65,7 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.EmailBackend"
 # EMAIL_FILE_PATH = os.path.join(os.path.dirname(BASE_DIR), "sent_emails")
 
 TEMPLATES = [
@@ -101,6 +101,9 @@ DATABASES = {
         'PORT': '',
     }
 }
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
