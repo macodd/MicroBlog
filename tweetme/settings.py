@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # third party
     'crispy_forms',
     'rest_framework',
+    'storages',
 
     # local
     'tweets.apps.TweetsConfig',
@@ -143,25 +144,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "live-static-files", "static-root")
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Local development
-# LOCAL_STATIC_CDN = os.path.join(os.path.dirname(BASE_DIR), 'static-cdn')
-# STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN, 'static')
-# MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN, 'media')
-
-
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "live-static-files", "media-root")
+# STATIC_URL = '/static/'
+#
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, "live-static-files", "static-root")
+#
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#
+# MEDIA_URL = '/media/'
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, "live-static-files", "media-root")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaStorage'
+
+AWS_DEFAULT_ACL = None
