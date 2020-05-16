@@ -145,24 +145,28 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-STATIC_ROOT = ''
-
-AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
-AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'static'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-PUBLIC_MEDIA_LOCATION = 'media'
-MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, PUBLIC_MEDIA_LOCATION)
-DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaStorage'
+
+AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
+AWS_SECRET_ACCESS_KEY = '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'
+
+AWS_FILE_EXPIRE = 200
+AWS_PRELOAD_METADATA = True
+AWS_QUERYSTRING_AUTH = True
+
+DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaRootS3Boto3Storage'
+STATICFILES_STORAGE = 'tweetme.storage_backends.StaticRootS3Boto3Storage'
+
+AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
+AWS_DEFAULT_ACL = 'public-read'
+S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
+MEDIA_ROOT = MEDIA_URL
+STATIC_URL = S3_URL + 'static/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
