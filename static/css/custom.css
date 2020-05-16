@@ -35,9 +35,6 @@ nav {
 a {
     color: #00909e;
 }
-body {
-    background: url("/static/images/background.jpg");
-}
 #card-container-body {
     padding: 10px;
 }
