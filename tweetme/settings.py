@@ -156,12 +156,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Local development
 # LOCAL_STATIC_CDN = os.path.join(os.path.dirname(BASE_DIR), 'static-cdn')
 # STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN, 'static')
+# MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN, 'media')
 
 
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN, 'media')
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "live-static-files", "media-root")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 

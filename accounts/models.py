@@ -3,7 +3,7 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.db.models.signals import post_save
 
-from .utils import rotate_image, upload_image_path, register_confirmation_mail
+from .utils import rotate_image, register_confirmation_mail
 
 
 class UserProfileManager(models.Manager):
@@ -47,7 +47,7 @@ class UserProfileManager(models.Manager):
 class UserProfile(models.Model):
     user            = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile', on_delete=models.CASCADE)
     image           = models.ImageField(default='images/default_avatar.jpg',
-                                    upload_to=upload_image_path,
+                                    upload_to='images',
                                     blank=True,
                                     null=True)
     following       = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='followed_by')
