@@ -8,6 +8,8 @@ from django.contrib.auth import get_user_model
 from django.core.mail import EmailMessage
 from render_block import render_block_to_string
 
+from tweetme.settings import DEFAULT_FROM_EMAIL
+
 User = get_user_model()
 
 
@@ -50,10 +52,11 @@ def rotate_image(instance):
 
 def register_confirmation_mail(user):
     subject = 'Gracias por registrarse!'
-    from_email = 'no-reply@fogata.com'
+    from_email = DEFAULT_FROM_EMAIL
     to_email = user.email
     html_content = render_block_to_string(
         'emails/new-user.html',
+        'html_main',
         {'first_name': user.first_name}
     )
     msg = EmailMessage(

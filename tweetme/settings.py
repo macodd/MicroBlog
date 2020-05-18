@@ -23,10 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wl*%vh)ro8^ggf5=x@oc(nft%=7@b^g&o2n2z29w#z-ywugv59'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com', 'www.lafogata.biz']
-
+if not DEBUG:
+    ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com', 'www.lafogata.biz']
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -66,8 +68,15 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
-EMAIL_BACKEND = "django.core.mail.backends.EmailBackend"
-# EMAIL_FILE_PATH = os.path.join(os.path.dirname(BASE_DIR), "sent_emails")
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'lafogatablog@gmail.com'
+EMAIL_HOST_PASSWORD = 'Morgenth@u2016'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Elissa <info@lafogata.biz>"
+
+ADMINS = [('Mark', EMAIL_HOST_USER)]
+MANAGERS = ADMINS
 
 TEMPLATES = [
     {
@@ -102,9 +111,10 @@ DATABASES = {
         'PORT': '',
     }
 }
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
+if not DEBUG:
+    import dj_database_url
+    db_from_env = dj_database_url.config()
+    DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -149,32 +159,40 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+if DEBUG:
+    STATIC_URL = '/static/'
+    LOCAL_STATIC_CDN = os.path.join(os.path.dirname(BASE_DIR), 'static-cdn')
+    STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN, 'static')
+    MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN, 'media')
+    MEDIA_URL = '/media/'
 
-AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
-AWS_SECRET_ACCESS_KEY = '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'
+else:
 
-AWS_FILE_EXPIRE = 200
-AWS_PRELOAD_METADATA = True
-AWS_QUERYSTRING_AUTH = True
+    AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
+    AWS_SECRET_ACCESS_KEY = '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'
 
-DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaRootS3Boto3Storage'
-STATICFILES_STORAGE = 'tweetme.storage_backends.StaticRootS3Boto3Storage'
+    AWS_FILE_EXPIRE = 200
+    AWS_PRELOAD_METADATA = True
+    AWS_QUERYSTRING_AUTH = True
 
-AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
-AWS_DEFAULT_ACL = 'public-read'
-S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_ROOT = MEDIA_URL
-STATIC_URL = S3_URL + 'static/'
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+    DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaRootS3Boto3Storage'
+    STATICFILES_STORAGE = 'tweetme.storage_backends.StaticRootS3Boto3Storage'
 
-import datetime
+    AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
+    AWS_DEFAULT_ACL = 'public-read'
+    S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
+    MEDIA_ROOT = MEDIA_URL
+    STATIC_URL = S3_URL + 'static/'
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
-two_months = datetime.timedelta(days=61)
-date_two_months_later = datetime.date.today() + two_months
-expires = date_two_months_later.strftime("%A, %d %B %Y 20:00:00 GMT")
+    import datetime
 
-AWS_HEADERS = {
-    'Expires': expires,
-    'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()), ),
-}
+    two_months = datetime.timedelta(days=61)
+    date_two_months_later = datetime.date.today() + two_months
+    expires = date_two_months_later.strftime("%A, %d %B %Y 20:00:00 GMT")
+
+    AWS_HEADERS = {
+        'Expires': expires,
+        'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()), ),
+    }

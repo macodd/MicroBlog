@@ -1,13 +1,16 @@
 from django.core.mail import EmailMessage
 from render_block import render_block_to_string
 
+from tweetme.settings import DEFAULT_FROM_EMAIL
+
 
 def mentioned_tweet_mail(email, tweet_id):
     subject = 'Alguien esta hablando de ti!'
-    from_email = 'no-reply@fogata.com'
+    from_email = DEFAULT_FROM_EMAIL
     to_email = email
     html_content = render_block_to_string(
         'emails/mentioned.html',
+        'html_main',
         {'tweet_id': tweet_id}
     )
 

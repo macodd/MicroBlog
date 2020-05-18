@@ -10,8 +10,8 @@ class RegisterForm(forms.Form):
     first_name      = forms.CharField(max_length=140, label='Nombre(s)')
     last_name       = forms.CharField(max_length=140, label='Apellido(s)')
     email           = forms.EmailField(widget=forms.EmailInput)
-    accept_terms    = forms.BooleanField()
-    password        = forms.CharField(widget=forms.PasswordInput)
+    accept_terms    = forms.BooleanField(label='Acceptar Terminos')
+    password        = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     password2       = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
 
     def clean_username(self):
