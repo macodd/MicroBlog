@@ -168,8 +168,8 @@ if DEBUG:
 
 else:
 
-    AWS_ACCESS_KEY_ID = '<key>'
-    AWS_SECRET_ACCESS_KEY = '<value>'
+    AWS_ACCESS_KEY_ID = 'AKIA22BNDA6LF4H6OBPP'
+    AWS_SECRET_ACCESS_KEY = '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'
 
     AWS_FILE_EXPIRE = 200
     AWS_PRELOAD_METADATA = True
@@ -178,7 +178,7 @@ else:
     DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaRootS3Boto3Storage'
     STATICFILES_STORAGE = 'tweetme.storage_backends.StaticRootS3Boto3Storage'
 
-    AWS_STORAGE_BUCKET_NAME = '<bucket>'
+    AWS_STORAGE_BUCKET_NAME = 'la-fogata-bucket'
     AWS_DEFAULT_ACL = 'public-read'
     S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
