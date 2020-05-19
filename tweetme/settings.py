@@ -73,7 +73,7 @@ EMAIL_HOST_USER = 'lafogatablog@gmail.com'
 EMAIL_HOST_PASSWORD = 'Morgenth@u2016'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "La Fogata <info@lafogata.biz>"
+DEFAULT_FROM_EMAIL = "Elissa <info@lafogata.biz>"
 
 ADMINS = [('Mark', EMAIL_HOST_USER)]
 MANAGERS = ADMINS
@@ -168,8 +168,8 @@ if DEBUG:
 
 else:
 
-    AWS_ACCESS_KEY_ID = ''
-    AWS_SECRET_ACCESS_KEY = ''
+    AWS_ACCESS_KEY_ID = '<key>'
+    AWS_SECRET_ACCESS_KEY = '<value>'
 
     AWS_FILE_EXPIRE = 200
     AWS_PRELOAD_METADATA = True
@@ -178,7 +178,7 @@ else:
     DEFAULT_FILE_STORAGE = 'tweetme.storage_backends.MediaRootS3Boto3Storage'
     STATICFILES_STORAGE = 'tweetme.storage_backends.StaticRootS3Boto3Storage'
 
-    AWS_STORAGE_BUCKET_NAME = ''
+    AWS_STORAGE_BUCKET_NAME = '<bucket>'
     AWS_DEFAULT_ACL = 'public-read'
     S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
