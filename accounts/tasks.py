@@ -6,21 +6,18 @@ from tweetme.settings import DEFAULT_FROM_EMAIL
 
 
 @shared_task
-def register_confirmation_mail(user):
+def register_confirmation_mail(first_name, email):
     subject = 'Gracias por registrarse!'
     from_email = DEFAULT_FROM_EMAIL
-    to_email = user.email
+    to_email = email
     html_content = render_block_to_string(
         'emails/new-user.html',
         'html_main',
-        {'first_name': user.first_name}
+        {'first_name': first_name}
     )
     msg = EmailMessage(
         subject, html_content, from_email, [to_email],
     )
     msg.content_subtype = "html"
-    try:
-        msg.send()
-    except:
-        print('Unable to send')
+    msg.send()
     return None

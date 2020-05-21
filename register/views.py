@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, FormView
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordChangeDoneView,
@@ -11,8 +11,6 @@ from django.contrib.auth.views import (
 
 from .forms import RegisterForm
 from .tasks import change_password_confirmation_mail
-
-User = get_user_model()
 
 
 class RegisterView(FormView):
@@ -26,7 +24,7 @@ class RegisterView(FormView):
         last_name = form.cleaned_data.get('last_name')
         email   = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password2')
-        new_user = User.objects.create(
+        new_user = User.objects.create_user(
             username=username,
             first_name=first_name.title(),
             last_name=last_name.title(),

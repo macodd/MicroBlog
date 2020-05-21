@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wl*%vh)ro8^ggf5=x@oc(nft%=7@b^g&o2n2z29w#z-ywugv59'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if not DEBUG:
     ALLOWED_HOSTS = ['mark-codd-micro-blog-fogata.herokuapp.com', 'www.lafogata.biz']
