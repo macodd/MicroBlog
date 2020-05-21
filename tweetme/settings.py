@@ -73,7 +73,7 @@ EMAIL_HOST_USER = 'lafogatablog@gmail.com'
 EMAIL_HOST_PASSWORD = 'Morgenth@u2016'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Elissa <info@lafogata.biz>"
+DEFAULT_FROM_EMAIL = "Fogata <info@lafogata.biz>"
 
 ADMINS = [('Mark', EMAIL_HOST_USER)]
 MANAGERS = ADMINS
@@ -196,3 +196,9 @@ else:
         'Expires': expires,
         'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()), ),
     }
+
+# CELERY_BROKER_URL =
+# 'redis://h:pd099a5bbc21c431e00d9a10ce92dc60a734be504ee164074a491c80e84a72227@ec2-52-21-199-125.compute-1.amazonaws.com:28899'
+CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'

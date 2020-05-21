@@ -1,11 +1,15 @@
 {% extends 'home_base.html' %}
 
+{% load static %}
+
 {% block head_title %}Términos | {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="card">
         <div class="card-header text-center">
-            logo
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
+            </a>
         </div>
         <div class="card-body container col-lg-6">
             <h1 class="text-center">Terminos y Condiciones de Uso</h1>
@@ -33,16 +37,17 @@
             una de las reglas previamente establecidas.</p>
             <hr/>
 
-            <h3>Gracias y disfrute de nuestros servicios</h3>
+            <h3>Gracias y disfrute de nuestros servicios</h3><br/>
 
             {% if previous_url %}
-                <a class="my-3" href={{ previous_url }}>Regresar</a><br/>
+                <p><a class="my-3" href={{ previous_url }}>Regresar</a></p>
             {% endif %}
-            <a href="{% url 'home' %}">Inicio</a>
+            <p><a href="{% url 'home' %}">Inicio</a></p>
 
         </div>
         <div class="card-footer text-center">
-            <a href="{% url 'contact' %}">Contactenos</a><br/>@maca
+            <p><a href="{% url 'contact' %}">Contactenos</a></p>
+            <p>@maca</p>
         </div>
     </div>
 {% endblock %}

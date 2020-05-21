@@ -11,7 +11,7 @@ from hashtags.signals import parsed_hashtags
 
 from accounts.models import UserProfile
 
-from .utils import mentioned_tweet_mail
+from .tasks import mentioned_tweet_mail
 
 User = get_user_model()
 
@@ -84,15 +84,11 @@ def tweet_save_receiver(sender, instance, created, **kwargs):
     if created and not instance.parent:
         user_regex = r'@(?P<username>[\w.@+-]+)'
         usernames = re.findall(user_regex, instance.content)
-        # notification add celery
         for u in usernames:
             qs = User.objects.filter(username__iexact=u)
             if qs.exists():
                 user_obj = qs.first()
-                try:
-                    mentioned_tweet_mail(user_obj.email, instance.pk)
-                except:
-                    pass
+                mentioned_tweet_mail.delay(user_obj.email, instance.pk)
 
         hashtag_regex = r'#(?P<hashtag>[\w\d+-]+)'
         hashtags = re.findall(hashtag_regex, instance.content)

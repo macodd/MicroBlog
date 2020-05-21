@@ -7,6 +7,8 @@ from django.shortcuts import render
 
 from .forms import ContactForm
 
+from .tasks import contact_mail
+
 User = get_user_model()
 
 
@@ -53,5 +55,6 @@ class ContactFormView(FormView):
 
     def form_valid(self, form):
         messages.success(self.request, 'Mensaje enviado exitosamente!')
+        contact_mail.delay(form.cleaned_data)
         return super().form_valid(form)
 
