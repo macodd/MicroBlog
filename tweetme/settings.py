@@ -197,8 +197,7 @@ else:
         'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()), ),
     }
 
-# CELERY_BROKER_URL =
-# 'redis://h:pd099a5bbc21c431e00d9a10ce92dc60a734be504ee164074a491c80e84a72227@ec2-52-21-199-125.compute-1.amazonaws.com:28899'
-CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_BROKER_URL = 'redis://h:pd099a5bbc21c431e00d9a10ce92dc60a734be504ee164074a491c80e84a72227@ec2-52-21-199-125.compute-1.amazonaws.com:28899'
+# CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
