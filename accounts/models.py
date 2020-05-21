@@ -76,10 +76,10 @@ class UserProfile(models.Model):
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(user=instance)
-        try:
-            register_confirmation_mail.delay(instance.first_name, instance.email)
-        except:
-            pass
+        # try:
+        #     register_confirmation_mail.delay(instance.first_name, instance.email)
+        # except:
+        #     pass
 
 
 post_save.connect(post_save_user_receiver, sender=settings.AUTH_USER_MODEL)
