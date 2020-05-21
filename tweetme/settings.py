@@ -201,3 +201,10 @@ CELERY_BROKER_URL = 'redis://h:pd099a5bbc21c431e00d9a10ce92dc60a734be504ee164074
 # CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
+
+CACHES = {
+    "default": {
+        "BACKEND": "redis_cache.RedisCache",
+        "LOCATION": os.environ.get('REDIS_URL'),
+    }
+}
