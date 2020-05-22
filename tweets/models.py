@@ -1,17 +1,11 @@
-import re
-
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
-from django.db import models
+from django.utils.timezone import now
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.utils.timezone import now
+from django.db import models
 
-from hashtags.signals import parsed_hashtags
 
 from accounts.models import UserProfile
-
-from .tasks import mentioned_tweet_mail
 
 User = get_user_model()
 
@@ -78,21 +72,3 @@ class Tweet(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
-
-
-def tweet_save_receiver(sender, instance, created, **kwargs):
-    if created and not instance.parent:
-        user_regex = r'@(?P<username>[\w.@+-]+)'
-        usernames = re.findall(user_regex, instance.content)
-        for u in usernames:
-            qs = User.objects.filter(username__iexact=u)
-            if qs.exists():
-                user_obj = qs.first()
-                mentioned_tweet_mail.delay(user_obj.email, instance.pk)
-
-        hashtag_regex = r'#(?P<hashtag>[\w\d+-]+)'
-        hashtags = re.findall(hashtag_regex, instance.content)
-        parsed_hashtags.send(sender=instance.__class__, hashtag_list=hashtags)
-
-
-post_save.connect(tweet_save_receiver, sender=Tweet)

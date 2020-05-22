@@ -1,5 +1,5 @@
 from django.core.files import File
-from PIL import Image, ExifTags
+from PIL import Image, ExifTags, UnidentifiedImageError
 from io import BytesIO
 import os
 
@@ -40,6 +40,7 @@ def rotate_image(instance):
         pil_image.save(output, format='JPEG', quality=75)
         output.seek(0)
         instance.image = File(output, instance.image.name)
-    except (AttributeError, KeyError, IndexError):
+    except (AttributeError, KeyError, IndexError, UnidentifiedImageError):
         # cases: image don't have getexif
         pass
+    return None
