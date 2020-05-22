@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block script %}
 
     <script>
@@ -29,7 +31,11 @@
 
     <div class="row">
         <div class="col-lg-3 col-12" id="user-container" data-url="/api/profiles/{{ object.username }}">
-            <img src="{{ object.profile.image.url }}" class="mr-3 mb-3" alt="{{ object.username }}" style="max-height: 200px; max-width: 200px">
+            {% if object.profile.image %}
+                <img src="{{ object.profile.image.url }}" class="mr-3 mb-3" alt="" style="max-height: 200px; max-width: 200px">
+            {% else %}
+                <img src="{% static 'images/default_avatar.jpg' %}" class="mr-3 mb-3" alt="" style="max-height: 200px; max-width: 200px">
+            {% endif %}
             <h1>{{ object.username }}</h1>
             <p>{{ object.first_name }} {{ object.last_name }}</p>
             <hr/>
@@ -46,7 +52,11 @@
                 <h3>Siguiendo <small>{{ object.profile.get_following.count }}</small></h3></a>
             {% for user in object.profile.get_following|slice:":4" %}
                 <a href="/profiles/{{ user.username }}">
-                    <img src="{{ user.profile.image.url }}" class="avatar" alt="null"/>
+                    {% if user.profile.image %}
+                        <img src="{{ user.profile.image.url }}" class="avatar" alt=""/>
+                    {% else %}
+                        <img src="{% static 'images/default_avatar.jpg' %}" class="avatar" alt=""/>
+                    {% endif %}
                 </a>
             {% empty %}
                 <h6>No sigue a nadie.</h6>
@@ -57,7 +67,11 @@
                 <h3>Seguidores</h3></a>
             {% for profile in object.followed_by.random|slice:":4" %}
                 <a href="/profiles/{{ profile.user.username }}">
-                    <img src="{{ profile.image.url }}" class="avatar" alt="null"/>
+                    {% if profile.image %}
+                        <img src="{{ profile.image.url }}" class="avatar" alt=""/>
+                    {% else %}
+                        <img src="{% static 'images/default_avatar.jpg' %}" class="avatar" alt=""/>
+                    {% endif %}
                 </a>
             {% empty %}
                 <h6>No tiene seguidores.</h6>

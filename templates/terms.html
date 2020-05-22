@@ -1,56 +1,29 @@
-{% extends 'home_base.html' %}
+<h1 class="text-center">Terminos y Condiciones de Uso</h1>
+<hr/>
+<p>Puede usar nuestra plataforma para expresar sus ideas sin censura al menos que sean en forma de ataque
+    personal contra otro usuario.</p>
+<p>Nos reservamos el derecho de eliminar a cualquier usuario que utilize los siguientes tópicos como
+    ataque personal y/o prejuicio:</p>
+<ul>
+    <li>Racismo</li>
+    <li>Sexismo</li>
+    <li>Nacionalidad</li>
+    <li>Clase social</li>
+</ul>
+<p>Además de cualquier otro modo de prejuicio que los moderadores de LaFogata.biz
+    decidan sea considerada una ofensa intelectual.</p>
+<p>Nos dedicamos a proveer una plataforma en la cual todo usuario es libre de
+    expresarse de la forma que desee.</p>
 
-{% load static %}
+<h1>Privacidad</h1>
+<hr/>
+<p>No venderemos ni compartiremos su información sin su autorización.</p>
+<p>Cada usuario es considerado un "autor", y solo las publicaciones hechas por
+    el mismo son tratadas de forma pública.</p>
+<p>Se le motiva a todos nuestros usuarios a usar su libre derecho de expresión,
+    con excepcion en situaciones en las que algún usuario
+    quiebre alguna de las reglas previamente establecidas por la cual el
+    acceso será revocado.</p>
+<hr/>
 
-{% block head_title %}Términos | {{ block.super }}{% endblock %}
-
-{% block content %}
-    <div class="card">
-        <div class="card-header text-center">
-            <a href="{% url 'home' %}">
-                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
-            </a>
-        </div>
-        <div class="card-body container col-lg-6">
-            <h1 class="text-center">Terminos y Condiciones de Uso</h1>
-            <hr/>
-            <p>Puede usar nuestra plataforma para expresar sus ideas sin censura al menos que sean en forma de ataque
-            personal contra otro usuario.</p>
-            <p>Nos reservamos el derecho de eliminar a cualquier usuario que utilize los siguientes tópicos como
-                ataque personal y/o prejuicio:</p>
-            <ul>
-                <li>Racismo</li>
-                <li>Sexismo</li>
-                <li>Nacionalidad</li>
-                <li>Clase social</li>
-            </ul>
-            <p>Además de cualquier otro modo de prejuicio que los moderadores de LaFogata.biz
-                decidan sea considerada una ofensa intelectual.</p>
-            <p>Nos dedicamos a proveer una plataforma en la cual todo usuario es libre de
-                expresarse de la forma que desee.</p>
-
-            <h1>Privacidad</h1>
-            <hr/>
-            <p>No venderemos ni compartiremos su información sin su autorización.</p>
-            <p>Cada usuario es considerado un "autor", y solo las publicaciones hechas por
-                el mismo son tratadas de forma pública.</p>
-            <p>Se le motiva a todos nuestros usuarios a usar su libre derecho de expresión,
-                con excepcion en situaciones en las que algún usuario
-                quiebre alguna de las reglas previamente establecidas por la cual el
-                acceso será revocado.</p>
-            <hr/>
-
-            <h3>Gracias y disfrute de nuestros servicios</h3><br/>
-
-            {% if previous_url %}
-                <p><a class="my-3" href={{ previous_url }}>Regresar</a></p>
-            {% endif %}
-            <p><a href="{% url 'home' %}">Inicio</a></p>
-
-        </div>
-        <div class="card-footer text-center">
-            <p><a href="{% url 'contact' %}">Contáctenos</a></p>
-            <p>@maca</p>
-        </div>
-    </div>
-{% endblock %}
+<h3>Gracias y disfrute de nuestros servicios</h3><br/>

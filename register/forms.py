@@ -6,12 +6,12 @@ User = get_user_model()
 
 
 class RegisterForm(forms.Form):
-    username        = forms.CharField(max_length=140, label='Nombre de Usuario')
+    username        = forms.CharField(max_length=140, label='Nombre de Usuario', help_text='Mínimo 4 caracteres')
     first_name      = forms.CharField(max_length=140, label='Nombre(s)')
     last_name       = forms.CharField(max_length=140, label='Apellido(s)')
     email           = forms.EmailField(widget=forms.EmailInput)
     accept_terms    = forms.BooleanField(label='Acceptar Terminos')
-    password        = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password        = forms.CharField(label='Contraseña', widget=forms.PasswordInput, help_text='Mínimo 8 caracteres')
     password2       = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
 
     def clean_username(self):

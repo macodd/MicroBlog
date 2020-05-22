@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block script %}
 
     <script>
@@ -34,7 +36,11 @@
             <h1>Usuarios</h1>
             <hr/>
             {% for user in users %}
-                <img src="{{ user.profile.image.url }}" class="avatar mr-2" alt="null"/>
+                {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" class="avatar mr-2" alt=""/>
+                {% else %}
+                    <img src="{% static 'images/default_avatar.jpg' %}" class="avatar mr-2" alt=""/>
+                {% endif %}
                 <a href="/profiles/{{ user.username }}/">{{ user.username }}</a><br/>
             {% empty %}
                 <p>No se encontro a ningun usuario</p>

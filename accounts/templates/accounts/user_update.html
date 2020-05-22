@@ -41,7 +41,9 @@
                 </div>
                 <div class="form-group">
                     <label for="imageURL">{{ form.image.label }}</label><br/>
-                    <img src="{{ user_img.url }}" class="align-self-center mr-3" style="height: 64px; width: 64px" alt="null">
+                    {% if user_img %}
+                        <img src="{{ user_img.url }}" class="align-self-center mr-3" style="height: 64px; width: 64px" alt="">
+                    {% endif %}
                     {{ form.image }}
                 </div>
                 <div class="form-group">

@@ -33,7 +33,7 @@ class SearchView(LoginRequiredMixin, View):
 
 
 class TermsView(TemplateView):
-    template_name = 'terms.html'
+    template_name = 'terms_base.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

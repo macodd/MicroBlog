@@ -1,0 +1,29 @@
+{% extends 'home_base.html' %}
+
+{% load static %}
+
+{% block head_title %}Términos | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header text-center">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/nature.png' %}" width="32" height="32" alt="Fogata">
+            </a>
+        </div>
+        <div class="card-body container col-lg-6">
+
+            {% include 'terms.html' %}
+
+            {% if previous_url %}
+                <p><a class="my-3" href={{ previous_url }}>Regresar</a></p>
+            {% endif %}
+            <p><a href="{% url 'home' %}">Inicio</a></p>
+
+        </div>
+        <div class="card-footer text-center">
+            <p><a href="{% url 'contact' %}">Contáctenos</a></p>
+            <p>@maca</p>
+        </div>
+    </div>
+{% endblock %}

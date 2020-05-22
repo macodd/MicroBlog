@@ -34,7 +34,9 @@ class UserDisplaySerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         qs = UserProfile.objects.filter(user__username=obj)
-        return qs.first().image.url
+        if qs.first().image:
+            return qs.first().image.url
+        return None
 
     def get_follower_count(self, obj):
         qs = UserProfile.objects.filter(user__username=obj)

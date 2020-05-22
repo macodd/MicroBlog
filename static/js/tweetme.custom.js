@@ -1,4 +1,5 @@
 function loadTweetContainer(tweetContainerID, fetchOneID) {
+    console.log(myApp.staticUrl)
     const query = new URLSearchParams(window.location.search);
     let initial_url;
     let tweetContainer;
@@ -83,6 +84,8 @@ function loadTweetContainer(tweetContainerID, fetchOneID) {
         let tweet;
         let container;
         let tweetUser;
+        let tweetImage;
+        let userImage;
         let tweetId = tweetValue.id;
 
         let preContent = "";
@@ -96,8 +99,6 @@ function loadTweetContainer(tweetContainerID, fetchOneID) {
             }, 2000)
         }
 
-        console.log(tweetValue.date_display)
-
         if (tweetValue.parent){
             tweetUser = tweetValue.user.username;
             tweetId = tweetValue.parent.id;
@@ -110,9 +111,17 @@ function loadTweetContainer(tweetContainerID, fetchOneID) {
         if (tweetValue.did_like)
             verb = 'Unlike'
 
-        const tweetImage = '<img src="' + tweetValue.user.image +
-            '" style="height: 64px; width: 64px" class="align-self-center mr-3" ' +
-            'alt="-\o/-">';
+        if(tweetValue.user.image != null){
+            userImage = tweetValue.user.image;
+        }
+        else {
+            userImage = myApp.staticUrl + '/default_avatar.jpg';
+        }
+
+        tweetImage = '<img src="' + userImage +
+                '" style="height: 64px; width: 64px" class="align-self-center mr-3" ' +
+                'alt="">';
+
 
         tweet = '<a href="' + tweetValue.user.url + '"><b>' +
             tweetValue.user.username + '</b></a><br/>' +
@@ -122,6 +131,7 @@ function loadTweetContainer(tweetContainerID, fetchOneID) {
             '<a class="mediaLink" id="retweetLink" href="/tweet/' + tweetId + '/retweet/">Quemar</a> | ' +
             '<a class="mediaLink" href="#" id="tweetLiked" data-id="' + tweetId + '">' +
             verb + '(' + tweetValue.likes +') </a>';
+
 
         container = openingContainerDiv + tweetImage +
             '<div class="media-body">' + preContent + tweet +

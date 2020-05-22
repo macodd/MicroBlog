@@ -22,6 +22,12 @@
     {% load static %}
     {% include 'navbar.html' %}
 
+    <script>
+        var myApp = {
+            staticUrl: '{% static 'images' %}'
+        }
+    </script>
+
     <div class="container my-4">
         <div class="card" id="card-container-body">
             <div id="customAlertContainer"></div>
