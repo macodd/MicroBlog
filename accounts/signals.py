@@ -11,7 +11,7 @@ from .tasks import register_confirmation_mail
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
-        register_confirmation_mail.delay(instance.first_name, instance.email)
+        # register_confirmation_mail.delay(instance.first_name, instance.email)
 
 
 @receiver(post_save, sender=User)
