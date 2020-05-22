@@ -3,10 +3,6 @@ from PIL import Image, ExifTags, UnidentifiedImageError
 from io import BytesIO
 import os
 
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
 
 def get_filename_ext(filepath):
     basename = os.path.basename(filepath)

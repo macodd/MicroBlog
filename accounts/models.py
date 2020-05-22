@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse_lazy
 
-from .utils import rotate_image, upload_image_path
+from .utils import upload_image_path
 
 
 class UserProfileManager(models.Manager):
@@ -64,7 +64,7 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('profiles:detail', kwargs={'username': self.user.username})
 
-    def save(self, *args, **kwargs):
-        if self.image:
-            rotate_image(self)
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.image:
+    #         rotate_image(self)
+    #     return super().save(*args, **kwargs)
