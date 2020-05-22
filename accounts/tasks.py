@@ -1,4 +1,5 @@
 from celery import shared_task
+
 from django.core.mail import EmailMessage
 from render_block import render_block_to_string
 
