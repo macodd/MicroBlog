@@ -1,11 +1,8 @@
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
-from .serializers import UserDisplaySerializer
-
-
-User = get_user_model()
+from .serializers import UserDisplaySerializer, UsernameTakenSerializer
 
 
 class UserProfileAPIView(RetrieveAPIView):
@@ -13,3 +10,10 @@ class UserProfileAPIView(RetrieveAPIView):
     lookup_field            = 'username'
     serializer_class        = UserDisplaySerializer
     permission_classes      = [IsAuthenticated]
+
+
+class UsernameTakenAPIView(RetrieveAPIView):
+    queryset                = User.objects.all()
+    lookup_field            = 'username'
+    serializer_class        = UsernameTakenSerializer
+    permission_classes      = [AllowAny]

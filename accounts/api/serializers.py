@@ -1,10 +1,19 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.urls import reverse_lazy
 
 from accounts.models import UserProfile
 
-User = get_user_model()
+
+class UsernameTakenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username'
+        ]
+        read_only_fields = [
+            'username'
+        ]
 
 
 class UserDisplaySerializer(serializers.ModelSerializer):

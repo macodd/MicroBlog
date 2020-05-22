@@ -12,7 +12,7 @@
 
 {% endblock %}
 
-{% block title %}Busqueda | {{ block.super }}{% endblock %}
+{% block title %}Búsqueda | {{ block.super }}{% endblock %}
 
 {% block content %}
     <div class="row" id="row1">
@@ -37,7 +37,7 @@
                 <img src="{{ user.profile.image.url }}" class="avatar mr-2" alt="null"/>
                 <a href="/profiles/{{ user.username }}/">{{ user.username }}</a><br/>
             {% empty %}
-                <p>No se encontro ningun usuario</p>
+                <p>No se encontro a ningun usuario</p>
             {% endfor %}
         </div>
     </div>

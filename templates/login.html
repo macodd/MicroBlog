@@ -62,11 +62,13 @@ $(document).ready(function () {
                 </div>
                 {# Assumes you setup the password_reset view in your URLconf #}
                 <p><a href="{% url 'register:start' %}">Registrarse</a></p>
-                <p><a href="{% url 'register:password_reset' %}">Olvide mi contraseña?</a></p>
+                <p><a href="{% url 'register:password_reset' %}">Olvidé mi contraseña?</a></p>
             </div>
         </div>
         <div class="card-footer">
-            <a href="{% url 'terms' %}">Terminos</a> | <a href="{% url 'contact' %}">Contactenos</a><br/>@maca
+            <p><a href="{% url 'terms' %}">Términos</a></p>
+            <p><a href="{% url 'contact' %}">Contáctenos</a></p>
+            @maca
         </div>
     </div>
 

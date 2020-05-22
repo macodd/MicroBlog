@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from django.utils.timesince import timesince
-from datetime import datetime
 
 from tweets.models import Tweet
 from accounts.api.serializers import UserDisplaySerializer

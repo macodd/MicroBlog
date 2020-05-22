@@ -11,6 +11,38 @@
             $("#id_username").addClass("form-control");
             $("#id_password").addClass("form-control");
             $("#id_password2").addClass("form-control");
+
+            var typingTimer;
+            var doneInterval = 800;
+            var searchInput = $('#id_username');
+            var searchQuery;
+
+            searchInput.keyup(function(event){
+                searchQuery =  $(this).val()
+                clearTimeout(typingTimer)
+                typingTimer = setTimeout(doneSearchTyping, doneInterval)
+            })
+
+            searchInput.keydown(function(event){
+                clearTimeout(typingTimer)
+            })
+
+            function doneSearchTyping(){
+                if (searchQuery.length >= 4){
+                    // do search
+                    $.ajax({
+                        url: '/api/profiles/find/' + searchQuery + '/',
+                        method: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            $('#user_check').css('display', 'none');
+                        },
+                        error: function (data) {
+                            $('#user_check').css('display', 'inline')
+                        }
+                    })
+                }
+            }
         })
     </script>
 {% endblock %}
@@ -81,6 +113,9 @@
                     <label class="col-sm-3 col-form-label">{{ form.username.label }}</label>
                     <div class="col-sm-8">
                         {{ form.username }}
+                    </div>
+                    <div class="col-sm-1 mt-1 text-left" id="user_taken_check">
+                        <img src="{% static 'images/correct24x24.png' %}" id="user_check" alt="" style="display: none"/>
                     </div>
                 </div>
                 <div class="form-group row">
