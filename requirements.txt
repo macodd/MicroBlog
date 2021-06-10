@@ -5,7 +5,7 @@ boto3==1.13.11
 botocore==1.16.11
 celery==4.4.2
 dj-database-url==0.5.0
-Django==3.0.5
+Django==3.1.12
 django-crispy-forms==1.9.0
 django-filter==2.2.0
 django-redis-cache==2.1.1
